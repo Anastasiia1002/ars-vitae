@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", "Times New Roman", serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+}
+
+:root {
+  --radius: 0.25rem;
+  --alabaster: oklch(97.6% 0.008 85);
+  --graphite: oklch(20.7% 0.004 60);
+  --sand: oklch(91.8% 0.017 84);
+  --sand-deep: oklch(85.5% 0.024 82);
+  --sage: oklch(61.2% 0.031 148);
+  --sage-soft: oklch(82% 0.026 148);
+  --champagne: oklch(87.6% 0.055 82);
+  --background: var(--alabaster);
+  --foreground: var(--graphite);
+  --card: oklch(99.2% 0.005 85);
+  --primary: var(--graphite);
+  --primary-foreground: var(--alabaster);
+  --secondary: var(--sand);
+  --muted: var(--sand);
+  --muted-foreground: oklch(52% 0.012 70);
+  --accent: var(--sage);
+  --accent-foreground: oklch(98% 0.008 85);
+  --destructive: oklch(55% 0.19 27);
+  --border: oklch(88.4% 0.014 84);
+  --gradient-champagne: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--champagne) 70%, transparent),
+    color-mix(in oklab, var(--sage-soft) 45%, transparent)
+  );
+  --gradient-veil: radial-gradient(
+    120% 90% at 50% 0%,
+    color-mix(in oklab, var(--champagne) 40%, transparent),
+    transparent 70%
+  );
+  --shadow-soft: 0 2px 6px -2px color-mix(in oklab, var(--graphite) 8%, transparent);
+  --shadow-lift: 0 30px 60px -30px color-mix(in oklab, var(--graphite) 35%, transparent);
+  --shadow-glow:
+    0 0 0 1px color-mix(in oklab, var(--sage) 30%, transparent),
+    0 24px 60px -24px color-mix(in oklab, var(--sage) 45%, transparent);
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--sage) 35%, transparent);
+}
+
+button,
+a,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .eyebrow {
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+  }
+
+  .bento-card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 8px);
+    box-shadow: var(--shadow-soft);
+    transition:
+      transform 0.6s var(--ease-lux),
+      box-shadow 0.6s var(--ease-lux),
+      border-color 0.6s var(--ease-lux);
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .bento-wash {
+    background-image: var(--gradient-champagne);
+  }
+
+  .glass-panel {
+    background: color-mix(in oklab, var(--card) 72%, transparent);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    backdrop-filter: blur(22px) saturate(140%);
+    border: 1px solid color-mix(in oklab, var(--graphite) 10%, transparent);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .kinetic-line {
+    display: block;
+    overflow: hidden;
+  }
+}
+
+.bento-card-hover:hover {
+  box-shadow: var(--shadow-glow);
+  border-color: color-mix(in oklab, var(--sage) 45%, transparent);
+}
+
+#pillars {
+  scroll-margin-top: 4.5rem;
+}
+
+.animate-rise {
+  animation: rise-in 0.9s var(--ease-lux) both;
+}
+
+.animate-veil {
+  animation: 18s ease-in-out infinite veil-drift;
+}
+
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 1s var(--ease-lux),
+    transform 1s var(--ease-lux);
+  transform: translateY(34px);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes rise-in {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes veil-drift {
+  0%,
+  to {
+    opacity: 0.6;
+    transform: translate(0) scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translate(2%, -3%) scale(1.08);
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: color-mix(in oklab, black 72%, transparent);
+}
+
+.modal-panel {
+  position: relative;
+  width: min(100%, 32rem);
+  animation: rise-in 0.45s var(--ease-lux) both;
+}
+
+.toast {
+  position: fixed;
+  right: 1rem;
+  bottom: 5.5rem;
+  z-index: 90;
+  width: min(22rem, calc(100vw - 2rem));
+  animation: rise-in 0.45s var(--ease-lux) both;
+}
+
+@media (min-width: 768px) {
+  .toast {
+    bottom: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .animate-rise,
+  .animate-veil,
+  .modal-panel,
+  .toast {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
