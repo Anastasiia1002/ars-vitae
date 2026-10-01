@@ -6,3 +6,5 @@
 npm install
 npm run dev
 ```
+
+Сайт публікується з гілки `main` на GitHub Pages: https://anastasiia1002.github.io/ars-vitae/
