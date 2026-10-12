@@ -48,7 +48,7 @@ export default function Price() {
 
       <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[1fr_380px]">
         <div>
-          <div className="sticky top-16 z-30 -mx-1 flex flex-col gap-4 bg-background/85 px-1 py-4 backdrop-blur-md sm:top-20">
+          <div className="sticky top-20 z-30 -mx-1 flex flex-col gap-4 bg-background/85 px-1 py-4 backdrop-blur-md md:top-28">
             <div className="flex flex-wrap gap-2">
               {priceFilters.map((item) => (
                 <button

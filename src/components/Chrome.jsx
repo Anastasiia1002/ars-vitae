@@ -1,18 +1,35 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Instagram, MapPin, MessageCircle, Phone, Send } from "lucide-react";
-import { site } from "../data.js";
+import { images, site } from "../data.js";
 import BookingDialog from "./BookingDialog.jsx";
 
 export function Header() {
+  const [solid, setSolid] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const next = window.scrollY > 12;
+      setSolid((current) => (current === next ? current : next));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-300 ${
+        solid ? "bg-background/90 backdrop-blur-md" : ""
+      }`}
+    >
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-4 py-4 sm:px-5 md:px-10 md:py-6">
-        <NavLink to="/" data-magnetic className="group min-w-0">
-          <span className="font-display text-base tracking-[0.14em] sm:text-lg sm:tracking-[0.18em] md:text-xl">
-            ARS VITAE
-          </span>
-          <span className="eyebrow ml-2 hidden md:inline">sanctum</span>
+        <NavLink to="/" data-magnetic aria-label="ARS VITAE Sanctum" className="shrink-0">
+          <img
+            src={images.logo}
+            alt="ARS VITAE Sanctum — свідома косметологія, здоров'я та відновлення"
+            className="h-12 w-auto sm:h-14 md:h-16"
+          />
         </NavLink>
         <nav className="glass-panel hidden items-center gap-1 rounded-full px-2 py-1.5 md:flex">
           <NavItem to="/" label="Головна" end />
@@ -66,7 +83,11 @@ export function Footer() {
     <footer className="border-t border-border px-5 py-12 pb-32 md:py-12 md:pr-24 md:pb-16 md:pl-10">
       <div className="mx-auto flex max-w-[1500px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="font-display text-4xl leading-none md:text-6xl">ARS VITAE SANCTUM</p>
+          <img
+            src={images.logo}
+            alt="ARS VITAE Sanctum"
+            className="h-20 w-auto md:h-28"
+          />
           <p className="mt-3 text-sm text-muted-foreground">
             {site.address} · Ліцензія МОЗ України
           </p>
