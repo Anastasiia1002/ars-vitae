@@ -98,7 +98,10 @@ function Hero({ scrollY }) {
             <br />
             Ліцензія МОЗ України.
           </p>
-          <div className="animate-rise flex flex-wrap gap-2" style={{ animationDelay: "0.32s" }}>
+          <div
+            className="animate-rise flex flex-wrap gap-2 md:pr-16"
+            style={{ animationDelay: "0.32s" }}
+          >
             <a
               href="#pillars"
               data-magnetic

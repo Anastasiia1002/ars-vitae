@@ -35,7 +35,7 @@ export default function Price() {
   };
 
   return (
-    <main className="mx-auto max-w-[1500px] px-5 pt-28 pb-16 sm:pt-32 md:px-10 md:pt-44">
+    <main className="mx-auto max-w-[1500px] px-5 pt-28 pb-16 sm:pt-32 md:pt-44 md:pl-10 md:pr-24">
       <p className="eyebrow">Прайс-лист · {new Date().getFullYear()}</p>
       <h1 className="mt-4 font-display text-[13vw] leading-[0.86] md:text-[7vw]">
         Прозорі
@@ -48,7 +48,7 @@ export default function Price() {
 
       <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[1fr_380px]">
         <div>
-          <div className="sticky top-16 z-30 -mx-1 flex flex-col gap-4 bg-background/85 px-1 py-4 backdrop-blur-md sm:top-20">
+          <div className="sticky top-20 z-30 -mx-1 flex flex-col gap-4 bg-background/85 px-1 py-4 backdrop-blur-md md:top-28">
             <div className="flex flex-wrap gap-2">
               {priceFilters.map((item) => (
                 <button

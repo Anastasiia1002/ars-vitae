@@ -1,18 +1,35 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Instagram, MapPin, MessageCircle, Phone, Send } from "lucide-react";
-import { site } from "../data.js";
+import { images, site } from "../data.js";
 import BookingDialog from "./BookingDialog.jsx";
 
 export function Header() {
+  const [solid, setSolid] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const next = window.scrollY > 12;
+      setSolid((current) => (current === next ? current : next));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-300 ${
+        solid ? "bg-background/90 backdrop-blur-md" : ""
+      }`}
+    >
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-4 py-4 sm:px-5 md:px-10 md:py-6">
-        <NavLink to="/" data-magnetic className="group min-w-0">
-          <span className="font-display text-base tracking-[0.14em] sm:text-lg sm:tracking-[0.18em] md:text-xl">
-            ARS VITAE
-          </span>
-          <span className="eyebrow ml-2 hidden md:inline">sanctum</span>
+        <NavLink to="/" data-magnetic aria-label="ARS VITAE Sanctum" className="shrink-0">
+          <img
+            src={images.logo}
+            alt="ARS VITAE Sanctum — свідома косметологія, здоров'я та відновлення"
+            className="h-12 w-auto sm:h-14 md:h-16"
+          />
         </NavLink>
         <nav className="glass-panel hidden items-center gap-1 rounded-full px-2 py-1.5 md:flex">
           <NavItem to="/" label="Головна" end />
@@ -63,10 +80,14 @@ function NavItem({ to, label, end = false }) {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border px-5 py-12 pb-32 md:px-10 md:pb-16">
+    <footer className="border-t border-border px-5 py-12 pb-32 md:py-12 md:pr-24 md:pb-16 md:pl-10">
       <div className="mx-auto flex max-w-[1500px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="font-display text-4xl leading-none md:text-6xl">ARS VITAE SANCTUM</p>
+          <img
+            src={images.logo}
+            alt="ARS VITAE Sanctum"
+            className="h-20 w-auto md:h-28"
+          />
           <p className="mt-3 text-sm text-muted-foreground">
             {site.address} · Ліцензія МОЗ України
           </p>
@@ -94,6 +115,50 @@ const dock = [
   { href: site.phone, icon: Phone, label: "Дзвінок" },
   { href: site.maps, icon: MapPin, label: "Маршрут" },
 ];
+
+const corner = [
+  { href: site.telegram, icon: Send, label: "Telegram" },
+  { href: site.whatsapp, icon: MessageCircle, label: "WhatsApp" },
+  { href: site.instagram, icon: Instagram, label: "Instagram" },
+  { href: site.phone, icon: Phone, label: "Подзвонити", call: true },
+];
+
+export function ContactCorner() {
+  return (
+    <nav
+      aria-label="Месенджери та дзвінок"
+      className="fixed right-6 bottom-6 z-50 hidden flex-col items-end gap-2 md:flex"
+    >
+      {corner.map(({ href, icon: Icon, label, call }) => {
+        const external = !href.startsWith("tel:");
+        return (
+          <a
+            key={label}
+            href={href}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noreferrer" : undefined}
+            data-magnetic
+            aria-label={call ? `Подзвонити (${site.phoneLabel})` : label}
+            className="corner-link group relative"
+          >
+            <span className="corner-label pointer-events-none absolute top-1/2 right-full mr-2 hidden -translate-y-1/2 rounded-full bg-primary px-3 py-1.5 text-xs tracking-wide whitespace-nowrap text-primary-foreground shadow-[var(--shadow-soft)] transition-opacity duration-300 md:block">
+              {label}
+            </span>
+            <span
+              className={
+                call
+                  ? "flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-lift)] transition-transform duration-500 group-hover:scale-105 md:h-12 md:w-12"
+                  : "glass-panel flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-transform duration-500 group-hover:scale-105 md:h-12 md:w-12"
+              }
+            >
+              <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+            </span>
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
 
 export function MobileDock() {
   return (
