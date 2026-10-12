@@ -204,6 +204,15 @@ img {
   animation: rise-in 0.45s var(--ease-lux) both;
 }
 
+.corner-label {
+  opacity: 0;
+}
+
+.corner-link:hover .corner-label,
+.corner-link:focus-visible .corner-label {
+  opacity: 1;
+}
+
 .toast {
   position: fixed;
   right: 1rem;
@@ -215,7 +224,9 @@ img {
 
 @media (min-width: 768px) {
   .toast {
-    bottom: 1.25rem;
+    right: 5.75rem;
+    bottom: 1.5rem;
+    width: min(22rem, calc(100vw - 8rem));
   }
 }
 

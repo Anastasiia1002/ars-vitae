@@ -35,7 +35,7 @@ export default function Price() {
   };
 
   return (
-    <main className="mx-auto max-w-[1500px] px-5 pt-28 pb-16 sm:pt-32 md:px-10 md:pt-44">
+    <main className="mx-auto max-w-[1500px] px-5 pt-28 pb-16 sm:pt-32 md:pt-44 md:pl-10 md:pr-24">
       <p className="eyebrow">Прайс-лист · {new Date().getFullYear()}</p>
       <h1 className="mt-4 font-display text-[13vw] leading-[0.86] md:text-[7vw]">
         Прозорі

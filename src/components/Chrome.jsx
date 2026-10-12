@@ -63,7 +63,7 @@ function NavItem({ to, label, end = false }) {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border px-5 py-12 pb-32 md:px-10 md:pb-16">
+    <footer className="border-t border-border px-5 py-12 pb-32 md:py-12 md:pr-24 md:pb-16 md:pl-10">
       <div className="mx-auto flex max-w-[1500px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="font-display text-4xl leading-none md:text-6xl">ARS VITAE SANCTUM</p>
@@ -94,6 +94,50 @@ const dock = [
   { href: site.phone, icon: Phone, label: "Дзвінок" },
   { href: site.maps, icon: MapPin, label: "Маршрут" },
 ];
+
+const corner = [
+  { href: site.telegram, icon: Send, label: "Telegram" },
+  { href: site.whatsapp, icon: MessageCircle, label: "WhatsApp" },
+  { href: site.instagram, icon: Instagram, label: "Instagram" },
+  { href: site.phone, icon: Phone, label: "Подзвонити", call: true },
+];
+
+export function ContactCorner() {
+  return (
+    <nav
+      aria-label="Месенджери та дзвінок"
+      className="fixed right-6 bottom-6 z-50 hidden flex-col items-end gap-2 md:flex"
+    >
+      {corner.map(({ href, icon: Icon, label, call }) => {
+        const external = !href.startsWith("tel:");
+        return (
+          <a
+            key={label}
+            href={href}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noreferrer" : undefined}
+            data-magnetic
+            aria-label={call ? `Подзвонити (${site.phoneLabel})` : label}
+            className="corner-link group relative"
+          >
+            <span className="corner-label pointer-events-none absolute top-1/2 right-full mr-2 hidden -translate-y-1/2 rounded-full bg-primary px-3 py-1.5 text-xs tracking-wide whitespace-nowrap text-primary-foreground shadow-[var(--shadow-soft)] transition-opacity duration-300 md:block">
+              {label}
+            </span>
+            <span
+              className={
+                call
+                  ? "flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-lift)] transition-transform duration-500 group-hover:scale-105 md:h-12 md:w-12"
+                  : "glass-panel flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-transform duration-500 group-hover:scale-105 md:h-12 md:w-12"
+              }
+            >
+              <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+            </span>
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
 
 export function MobileDock() {
   return (
