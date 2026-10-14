@@ -92,14 +92,14 @@ function Hero({ scrollY }) {
             <a
               href="#pillars"
               data-magnetic
-              className="glass-panel rounded-full px-5 py-3 text-center text-xs tracking-[0.1em] uppercase"
+              className="glass-panel rounded-full px-5 py-3 text-center text-[11px] tracking-[0.08em] uppercase sm:text-xs"
             >
               Презентація послуг
             </a>
             <Link
               to="/price"
               data-magnetic
-              className="glass-panel rounded-full px-5 py-3 text-center text-xs tracking-[0.1em] uppercase"
+              className="glass-panel rounded-full px-5 py-3 text-center text-[11px] tracking-[0.08em] uppercase sm:text-xs"
             >
               Інтерактивний прайс-лист
             </Link>
@@ -109,7 +109,7 @@ function Hero({ scrollY }) {
                   type="button"
                   onClick={onClick}
                   data-magnetic
-                  className="rounded-full bg-primary px-5 py-3 text-xs tracking-[0.1em] text-primary-foreground uppercase"
+                  className="rounded-full bg-primary px-5 py-3 text-[11px] tracking-[0.08em] text-primary-foreground uppercase sm:text-xs"
                 >
                   Онлайн-запис
                 </button>
@@ -135,14 +135,14 @@ function Approach() {
   return (
     <section className="mx-auto max-w-[1500px] px-5 py-20 sm:py-24 md:px-10 md:py-36">
       <div className="grid gap-4 md:grid-cols-12 md:gap-5">
-        <div className="reveal md:col-span-7">
+        <div className="reveal md:col-span-12 lg:col-span-7">
           <p className="eyebrow">Підхід Sanctum</p>
           <h2 className="mt-4 font-display text-[1.85rem] leading-[1.05] sm:text-5xl md:text-[4.4vw] md:leading-[0.92]">
             Ендокринологія + дерматологія + практики тіла =
             <span className="text-accent italic"> тривала краса</span>
           </h2>
         </div>
-        <div className="reveal md:col-span-5 md:pt-16">
+        <div className="reveal md:col-span-12 lg:col-span-5 lg:pt-16">
           <p className="text-sm leading-relaxed text-muted-foreground">
             Ми не «закриваємо» симптом кремом чи ін'єкцією. Спершу дивимось на гормональний фон,
             стан шкіри та нервової системи — і лише потім будуємо протокол. Тому результат
@@ -182,7 +182,7 @@ function Approach() {
         {approaches.map((item, index) => (
           <div
             key={item.k}
-            className={`reveal bento-card bento-card-hover p-7 md:col-span-4 ${index === 1 ? "bg-secondary" : ""}`}
+            className={`reveal bento-card bento-card-hover p-6 sm:p-7 md:col-span-6 lg:col-span-4 ${index === 1 ? "bg-secondary" : ""}`}
           >
             <p className="eyebrow">{item.k}</p>
             <h3 className="mt-3 font-display text-2xl">{item.t}</h3>
@@ -208,8 +208,10 @@ function Pillars() {
 
   useEffect(() => {
     const root = scrollerRef.current;
-    if (!root || root.scrollWidth <= root.clientWidth + 8) return;
-    root.querySelector("[data-active='true']")?.scrollIntoView({ inline: "center", block: "nearest" });
+    const button = root?.querySelector("[data-active='true']");
+    if (!root || !button || root.scrollWidth <= root.clientWidth + 8) return;
+    const left = button.offsetLeft - (root.clientWidth - button.offsetWidth) / 2;
+    root.scrollTo({ left: Math.max(0, left) });
   }, [index, categories.length]);
 
   return (
@@ -256,8 +258,8 @@ function Pillars() {
                 </button>
               ))}
             </div>
-            <div className="mt-5 grid gap-4 lg:mt-6 lg:grid-cols-12 lg:items-start lg:gap-5">
-              <div className="reveal relative h-52 overflow-hidden rounded-[calc(var(--radius)+8px)] border border-border sm:h-72 lg:col-span-5 lg:h-auto lg:min-h-[28rem] lg:self-stretch">
+            <div className="mt-5 grid gap-4 lg:mt-6 lg:grid-cols-12 lg:gap-5">
+              <div className="reveal relative h-52 overflow-hidden rounded-[calc(var(--radius)+8px)] border border-border sm:h-64 lg:col-span-5 lg:h-auto lg:min-h-56">
                 <img
                   src={index % 2 === 0 ? images.portrait : images.texture}
                   alt=""
@@ -433,7 +435,7 @@ function Proof() {
             </div>
           </div>
           {quotes.map((item) => (
-            <blockquote key={item.a} className="reveal bento-card p-6 sm:p-7 md:col-span-4">
+            <blockquote key={item.a} className="reveal bento-card p-6 sm:p-7 md:col-span-6 lg:col-span-4">
               <p className="font-display text-xl leading-snug italic">«{item.q}»</p>
               <footer className="eyebrow mt-4">{item.a}</footer>
             </blockquote>

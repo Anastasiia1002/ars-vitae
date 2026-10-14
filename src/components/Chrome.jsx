@@ -165,7 +165,7 @@ export function MobileDock() {
             className="flex min-w-0 flex-1 flex-col items-center gap-1 rounded-2xl px-1 py-1.5 transition-colors active:bg-secondary"
           >
             <Icon className="h-[18px] w-[18px] text-foreground" strokeWidth={1.4} />
-            <span className="max-w-full truncate text-[10px] tracking-wide text-muted-foreground">
+            <span className="max-w-full text-[10px] leading-tight text-muted-foreground">
               {label}
             </span>
           </a>
