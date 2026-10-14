@@ -32,13 +32,19 @@ export default function BeforeAfter({ before, after, caption }) {
         <img
           src={after}
           alt="Фото після"
+          width={1000}
+          height={750}
           loading="lazy"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <img
           src={before}
           alt="Фото до"
+          width={1000}
+          height={750}
           loading="lazy"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
           style={{
             clipPath: `inset(0 ${100 - position}% 0 0)`,

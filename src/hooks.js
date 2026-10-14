@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export function useReveal(deps = []) {
   useEffect(() => {
@@ -18,23 +18,6 @@ export function useReveal(deps = []) {
     nodes.forEach((node) => observer.observe(node));
     return () => observer.disconnect();
   }, deps);
-}
-
-export function useScrollY() {
-  const [y, setY] = useState(0);
-  useEffect(() => {
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => setY(window.scrollY));
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
-  return y;
 }
 
 export function useTilt(amount = 6) {
