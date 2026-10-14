@@ -59,46 +59,34 @@ export default function Price() {
 
       <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="min-w-0">
-          <div className="sticky top-[4.25rem] z-30 -mx-1 flex flex-col gap-3 bg-background/95 px-1 py-3 backdrop-blur-md lg:top-24">
-            <label className="relative block md:hidden">
-              <span className="sr-only">Напрям</span>
-              <select
-                value={String(filter)}
-                onChange={(event) => setFilter(event.target.value)}
-                className="min-h-12 w-full appearance-none rounded-2xl border border-border bg-card px-4 pr-11 text-base outline-none"
-              >
-                <option value="all">Всі послуги</option>
-                {catalog.categories.map((item) => (
-                  <option key={item.id} value={String(item.id)}>
-                    {item.title}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            </label>
-            <div className="chip-scroller -mx-1 hidden px-1 pb-1 md:flex md:flex-wrap md:overflow-visible">
-              <FilterButton active={filter === "all"} onClick={() => setFilter("all")}>
-                Всі послуги
-              </FilterButton>
-              {catalog.categories.map((item) => (
-                <FilterButton
-                  key={item.id}
-                  active={String(filter) === String(item.id)}
-                  onClick={() => setFilter(item.id)}
+          <div className="sticky top-[4.25rem] z-30 -mx-1 bg-background/95 px-1 py-2 backdrop-blur-md lg:top-24">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <label className="relative block min-w-0 sm:w-[min(100%,22rem)] sm:shrink-0">
+                <span className="sr-only">Напрям</span>
+                <select
+                  value={String(filter)}
+                  onChange={(event) => setFilter(event.target.value)}
+                  className="min-h-12 w-full appearance-none truncate rounded-2xl border border-border bg-card px-4 pr-11 text-base outline-none"
                 >
-                  {item.title}
-                </FilterButton>
-              ))}
+                  <option value="all">Всі послуги</option>
+                  {catalog.categories.map((item) => (
+                    <option key={item.id} value={String(item.id)}>
+                      {item.title}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              </label>
+              <label className="flex min-h-12 min-w-0 flex-1 items-center gap-3 rounded-2xl border border-border bg-card px-4">
+                <Search className="h-4 w-4 shrink-0 text-muted-foreground" strokeWidth={1.4} />
+                <input
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Пошук за назвою"
+                  className="w-full bg-transparent py-3 text-base outline-none placeholder:text-muted-foreground"
+                />
+              </label>
             </div>
-            <label className="flex min-h-12 items-center gap-3 rounded-2xl border border-border bg-card px-4">
-              <Search className="h-4 w-4 shrink-0 text-muted-foreground" strokeWidth={1.4} />
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Пошук за назвою"
-                className="w-full bg-transparent py-3 text-base outline-none placeholder:text-muted-foreground"
-              />
-            </label>
           </div>
 
           {catalog.status === "loading" ? (
@@ -188,23 +176,6 @@ export default function Price() {
         </aside>
       </div>
     </main>
-  );
-}
-
-function FilterButton({ active, onClick, children }) {
-  return (
-    <button
-      type="button"
-      data-magnetic
-      onClick={onClick}
-      className={`min-h-11 shrink-0 snap-start rounded-full border px-4 py-2 text-sm transition-colors ${
-        active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border text-muted-foreground hover:border-accent hover:text-foreground"
-      }`}
-    >
-      {children}
-    </button>
   );
 }
 
