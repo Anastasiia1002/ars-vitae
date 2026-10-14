@@ -201,7 +201,23 @@ img {
 .modal-panel {
   position: relative;
   width: min(100%, 32rem);
+  max-height: calc(100svh - 2.5rem);
+  overflow: auto;
   animation: rise-in 0.45s var(--ease-lux) both;
+}
+
+.field-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  padding: 0.5rem 0;
+  outline: none;
+  transition: border-color 0.4s var(--ease-lux);
+}
+
+.field-input:focus {
+  border-color: var(--accent);
 }
 
 .toast {

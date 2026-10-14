@@ -11,12 +11,12 @@ export const images = {
 export const site = {
   telegram: "https://t.me/alina_naichuk",
   instagram: "https://instagram.com/ars.vitae.sanctum",
-  whatsapp: "https://wa.me/380500000000",
-  phone: "tel:+380500000000",
-  phoneLabel: "+380 50 000 00 00",
+  whatsapp: "https://wa.me/380501398350",
+  phone: "tel:+380501398350",
+  phoneLabel: "+380 50 139-83-50",
   city: "Чернівці",
-  address: "м. Чернівці, вул. Головна 1",
-  maps: "https://maps.google.com/?q=Чернівці+вул.+Головна+1",
+  address: "м. Чернівці, вулиця Героїв Майдану, 55",
+  maps: "https://maps.google.com/?q=48.272942,25.9292636",
 };
 
 export const categoryLabels = {

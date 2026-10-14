@@ -20,6 +20,8 @@ import { useReveal, useScrollY, useTilt } from "../hooks.js";
 import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
+import Team from "../components/Team.jsx";
+import { useCompany } from "../useAltegio.js";
 
 const approaches = [
   {
@@ -51,6 +53,7 @@ export default function Home() {
       <Hero scrollY={scrollY} />
       <Approach />
       <Pillars />
+      <Team />
       <PriceTeaser />
       <Proof />
       <Location />
@@ -396,6 +399,8 @@ function Proof() {
 }
 
 function Location() {
+  const { company } = useCompany();
+  const schedule = company?.schedule || "пн–пт: 9:00–19:00 / сб: 9:00–18:00 / нд: вихідний";
   return (
     <section className="mx-auto max-w-[1500px] px-5 pb-20 sm:pb-24 md:px-10 md:pb-32">
       <div className="reveal bento-card grid gap-8 p-6 sm:p-8 md:grid-cols-2 md:p-14">
@@ -435,8 +440,7 @@ function Location() {
           </p>
           <p className="flex gap-3">
             <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.4} />
-            Пн–Сб · 09:00–20:00. Приймаємо лише за попереднім записом, щоб у просторі була одна людина
-            одночасно.
+            {schedule}. Приймаємо за попереднім записом, щоб у просторі була одна людина одночасно.
           </p>
           <p className="flex gap-3">
             <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.4} />
