@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import Dialog from "./Dialog.jsx";
-import { site } from "../data.js";
 import {
   createBooking,
   fetchBookServices,
@@ -11,6 +10,7 @@ import {
   formatDuration,
   formatPrice,
   formatVisit,
+  isValidEmail,
   isValidPhone,
   normalizePhone,
   servicesInCategory,
@@ -90,6 +90,8 @@ function BookingForm({ presetServiceIds, presetStaffId, presetStaffName, onClose
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [attempted, setAttempted] = useState(false);
+  const [touched, setTouched] = useState({});
   const [success, setSuccess] = useState(null);
 
   useEffect(() => {
@@ -243,27 +245,21 @@ function BookingForm({ presetServiceIds, presetStaffId, presetStaffName, onClose
     }
   };
 
+  const problems = {
+    name: name.trim().length < 2 ? "Вкажіть ім'я" : "",
+    phone: isValidPhone(phone) ? "" : "Вкажіть номер у форматі +380 і ще 9 цифр",
+    email: isValidEmail(email) ? "" : "Вкажіть email, наприклад name@email.com",
+  };
+  const shownProblem = (key) => (attempted || touched[key] ? problems[key] : "");
+  const markTouched = (key) => setTouched((current) => ({ ...current, [key]: true }));
+
   const submit = async (event) => {
     event.preventDefault();
     if (submitting) return;
+    setAttempted(true);
+    if (problems.name || problems.phone || problems.email) return;
     const fullname = name.trim();
-    if (fullname.length < 2) {
-      setError("Вкажіть ім'я.");
-      return;
-    }
-    if (!isValidPhone(phone)) {
-      setError("Вкажіть телефон у форматі +380.");
-      return;
-    }
     const normalizedEmail = email.trim();
-    if ((company?.booking_email_required || normalizedEmail) && !/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
-      setError("Вкажіть коректний email.");
-      return;
-    }
-    if (company?.booking_comment_required && !comment.trim()) {
-      setError(`Заповніть поле «${commentLabel}».`);
-      return;
-    }
     setSubmitting(true);
     setError("");
     try {
@@ -330,13 +326,13 @@ function BookingForm({ presetServiceIds, presetStaffId, presetStaffName, onClose
           </button>
         </div>
       ) : (
-        <div className="mt-5">
-          <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="mt-5 flex max-h-[min(32rem,calc(100svh-14rem))] flex-col">
+          <div className="mb-3 flex items-center justify-between gap-3">
             {step !== origin ? (
               <button
                 type="button"
                 onClick={back}
-                className="inline-flex items-center gap-1 text-xs tracking-wide text-muted-foreground uppercase"
+                className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium"
               >
                 <ChevronLeft className="h-4 w-4" /> Назад
               </button>
@@ -347,7 +343,7 @@ function BookingForm({ presetServiceIds, presetStaffId, presetStaffName, onClose
               {STEP_LABEL[step]}
             </p>
           </div>
-          <div className="max-h-[min(32rem,calc(100svh-14rem))] overflow-y-auto pr-1">
+          <div className={`min-h-0 flex-1 pr-1 ${step === "details" ? "flex flex-col" : "overflow-y-auto"}`}>
             {step === "service" ? (
               <ServiceStep
                 catalog={offersReady ? catalog : { ...catalog, status: catalog.status === "error" ? "error" : "loading" }}
@@ -372,71 +368,71 @@ function BookingForm({ presetServiceIds, presetStaffId, presetStaffName, onClose
             {step === "date" ? <DateStep state={dates} onChoose={chooseDate} /> : null}
             {step === "time" ? <TimeStep state={times} onChoose={chooseSlot} /> : null}
             {step === "details" ? (
-              <form className="space-y-4" onSubmit={submit}>
-                <div className="rounded-2xl bg-secondary/70 p-4 text-sm">
-                  <p className="font-display text-xl leading-snug">{formatVisit(date, slot?.time)}</p>
-                  <p className="mt-1">{serviceTitle}</p>
-                  <p className="mt-1 text-muted-foreground">{staffName || anyLabel}</p>
-                </div>
-                <Field label="Ім'я">
-                  <input
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    required
-                    autoComplete="name"
-                    className="field-input"
-                    placeholder="Аліна"
-                  />
-                </Field>
-                <Field label="Телефон">
-                  <input
-                    value={phone}
-                    onChange={(event) => setPhone(event.target.value)}
-                    required
-                    type="tel"
-                    autoComplete="tel"
-                    className="field-input"
-                    placeholder="+380 __ ___ __ __"
-                  />
-                </Field>
-                {company?.booking_email_hidden ? null : (
-                  <Field label={company?.booking_email_required ? "Email" : "Email, якщо зручно"}>
+              <form className="flex min-h-0 flex-1 flex-col" noValidate onSubmit={submit}>
+                <div className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
+                  <div className="rounded-2xl bg-secondary/70 p-4 text-sm">
+                    <p className="font-display text-xl leading-snug">{formatVisit(date, slot?.time)}</p>
+                    <p className="mt-1">{serviceTitle}</p>
+                    <p className="mt-1 text-muted-foreground">{staffName || anyLabel}</p>
+                  </div>
+                  <Field label="Ім'я" required error={shownProblem("name")}>
+                    <input
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      onBlur={() => markTouched("name")}
+                      autoComplete="name"
+                      aria-invalid={Boolean(shownProblem("name"))}
+                      className={inputClass(shownProblem("name"))}
+                      placeholder="Аліна"
+                    />
+                  </Field>
+                  <Field label="Телефон" required error={shownProblem("phone")}>
+                    <input
+                      value={phone}
+                      onChange={(event) => setPhone(event.target.value)}
+                      onBlur={() => markTouched("phone")}
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      aria-invalid={Boolean(shownProblem("phone"))}
+                      className={inputClass(shownProblem("phone"))}
+                      placeholder="099 123 45 67"
+                    />
+                  </Field>
+                  <Field label="Email" required error={shownProblem("email")}>
                     <input
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
+                      onBlur={() => markTouched("email")}
                       type="email"
+                      inputMode="email"
                       autoComplete="email"
-                      required={Boolean(company?.booking_email_required)}
-                      className="field-input"
+                      aria-invalid={Boolean(shownProblem("email"))}
+                      className={inputClass(shownProblem("email"))}
                       placeholder="name@email.com"
                     />
                   </Field>
-                )}
-                {company?.booking_comment_hidden ? null : (
-                  <Field label={commentLabel}>
-                    <textarea
-                      value={comment}
-                      onChange={(event) => setComment(event.target.value)}
-                      required={Boolean(company?.booking_comment_required)}
-                      rows={2}
-                      className="field-input resize-none"
-                    />
-                  </Field>
-                )}
-                {error ? <p className="text-sm text-destructive">{error}</p> : null}
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full rounded-full bg-primary px-6 py-3 text-sm tracking-wide text-primary-foreground transition-transform duration-500 hover:scale-[1.02] disabled:opacity-60"
-                >
-                  {submitting ? "Записуємо…" : "Підтвердити запис"}
-                </button>
-                <p className="text-center text-xs text-muted-foreground">
-                  або напишіть у{" "}
-                  <a href={site.telegram} className="underline underline-offset-4">
-                    Telegram
-                  </a>
-                </p>
+                  {company?.booking_comment_hidden ? null : (
+                    <Field label={`${commentLabel} (необов'язково)`}>
+                      <textarea
+                        value={comment}
+                        onChange={(event) => setComment(event.target.value)}
+                        rows={2}
+                        className={`${inputClass("")} resize-none`}
+                      />
+                    </Field>
+                  )}
+                </div>
+                <div className="mt-3 border-t border-border bg-card pt-3">
+                  {error ? <p className="mb-2 text-sm text-destructive">{error}</p> : null}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full rounded-full bg-primary px-6 py-3 text-sm font-medium tracking-wide text-primary-foreground disabled:opacity-60"
+                  >
+                    {submitting ? "Записуємо…" : "Підтвердити запис"}
+                  </button>
+                </div>
               </form>
             ) : null}
             {error && step !== "details" ? <p className="mt-3 text-sm text-destructive">{error}</p> : null}
@@ -613,11 +609,21 @@ function TimeStep({ state, onChoose }) {
   );
 }
 
-function Field({ label, children }) {
+function inputClass(error) {
+  return `w-full rounded-xl border bg-card px-3 py-2.5 text-sm outline-none transition-colors focus:border-accent ${
+    error ? "border-destructive" : "border-border"
+  }`;
+}
+
+function Field({ label, required = false, error = "", children }) {
   return (
     <label className="block">
-      <span className="text-xs font-medium text-foreground">{label}</span>
-      <div className="mt-1">{children}</div>
+      <span className="text-sm font-medium text-foreground">
+        {label}
+        {required ? <span className="text-destructive"> *</span> : null}
+      </span>
+      <div className="mt-1.5">{children}</div>
+      {error ? <p className="mt-1 text-xs text-destructive">{error}</p> : null}
     </label>
   );
 }

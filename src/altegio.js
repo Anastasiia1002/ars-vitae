@@ -252,7 +252,12 @@ export function normalizePhone(input) {
 }
 
 export function isValidPhone(input) {
-  return /^\+[1-9]\d{9,14}$/.test(normalizePhone(input));
+  return /^\+380\d{9}$/.test(normalizePhone(input));
+}
+
+export function isValidEmail(input) {
+  const value = String(input || "").trim();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value);
 }
 
 export function staffPortrait(member) {
