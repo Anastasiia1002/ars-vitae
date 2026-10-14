@@ -18,16 +18,18 @@ export default function Price() {
 
   const activeCategory = catalog.categories.find((category) => String(category.id) === String(filter));
 
-  const visible = useMemo(() => {
-    const scoped = filter === "all" ? catalog.services : servicesInCategory(catalog.services, activeCategory);
+  const groups = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    if (!needle) return scoped;
-    return scoped.filter((service) => {
-      const category = catalog.categories.find((item) =>
-        item.id === "other" ? item.ids.includes(service.categoryId) : item.id === service.categoryId,
-      );
-      return `${service.title} ${service.comment} ${category?.title || ""}`.toLowerCase().includes(needle);
-    });
+    const categories = filter === "all" ? catalog.categories : catalog.categories.filter((item) => item === activeCategory);
+    return categories
+      .map((category) => ({
+        category,
+        items: servicesInCategory(catalog.services, category).filter((service) => {
+          if (!needle) return true;
+          return `${service.title} ${service.comment} ${category.title}`.toLowerCase().includes(needle);
+        }),
+      }))
+      .filter((group) => group.items.length);
   }, [catalog.services, catalog.categories, filter, activeCategory, query]);
 
   const toggle = (id) => {
@@ -45,10 +47,10 @@ export default function Price() {
         Послуги і ціни підвантажуються з Altegio. Запис одразу займає вільне вікно фахівця.
       </p>
 
-      <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[1fr_380px]">
-        <div>
+      <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="min-w-0">
           <div className="sticky top-16 z-30 -mx-1 flex flex-col gap-4 bg-background/85 px-1 py-4 backdrop-blur-md sm:top-20">
-            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 md:flex-wrap">
+            <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-1 md:flex-wrap">
               <FilterButton active={filter === "all"} onClick={() => setFilter("all")}>
                 Всі послуги
               </FilterButton>
@@ -82,69 +84,73 @@ export default function Price() {
             </p>
           ) : null}
 
-          <ul className="mt-4">
-            {visible.map((service) => {
-              const category = catalog.categories.find((item) =>
-                item.id === "other" ? item.ids.includes(service.categoryId) : item.id === service.categoryId,
-              );
-              const duration = formatDuration(service.duration);
-              return (
-                <li
-                  key={service.id}
-                  className="group grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b border-border py-6 transition-colors hover:bg-secondary/40 sm:gap-4 md:grid-cols-[minmax(0,1fr)_120px_160px_auto] md:items-center"
-                >
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="eyebrow">{category?.title}</span>
-                      <h2 className="font-display text-xl md:text-2xl">{service.title}</h2>
-                    </div>
-                    {service.comment ? (
-                      <p className="mt-1 max-w-lg text-sm text-muted-foreground">{service.comment}</p>
-                    ) : null}
-                    <p className="mt-2 text-xs tracking-wide text-accent md:hidden">
-                      {[duration, formatPrice(service)].filter(Boolean).join(" · ")}
-                    </p>
-                  </div>
-                  <span className="hidden rounded-full border border-border px-3 py-1 text-center text-xs text-muted-foreground md:inline">
-                    {duration || "—"}
-                  </span>
-                  <div className="hidden text-right md:block">
-                    <p className="font-display text-2xl tabular-nums">{formatPrice(service)}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => toggle(service.id)}
-                      data-magnetic
-                      aria-label="Додати в консультаційний сет"
-                      aria-pressed={selected.includes(service.id)}
-                      className={`flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-500 ${
-                        selected.includes(service.id)
-                          ? "border-accent bg-accent text-accent-foreground"
-                          : "border-border text-muted-foreground hover:border-accent hover:text-foreground"
-                      }`}
-                    >
-                      {selected.includes(service.id) ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                    </button>
-                    <BookingDialog
-                      serviceIds={[service.id]}
-                      trigger={({ onClick }) => (
-                        <button
-                          type="button"
-                          onClick={onClick}
-                          data-magnetic
-                          className="rounded-full border border-primary px-4 py-2 text-xs tracking-wide transition-colors duration-500 hover:bg-primary hover:text-primary-foreground"
-                        >
-                          Записатися
-                        </button>
-                      )}
-                    />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-          {catalog.status === "ready" && visible.length === 0 ? (
+          <div className="mt-4 space-y-6">
+            {groups.map((group) => (
+              <section key={group.category.id} className="overflow-hidden rounded-2xl border border-border">
+                <header className="flex items-baseline justify-between gap-3 bg-secondary px-4 py-3 sm:px-5">
+                  <h2 className="font-display text-2xl leading-tight">{group.category.title}</h2>
+                  <span className="shrink-0 text-xs text-muted-foreground">{group.items.length}</span>
+                </header>
+                <ul>
+                  {group.items.map((service) => {
+                    const duration = formatDuration(service.duration);
+                    return (
+                      <li key={service.id} className="border-t border-border">
+                        <div className="flex flex-col gap-3 px-4 py-4 transition-colors hover:bg-secondary/40 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+                          <div className="min-w-0">
+                            <h3 className="font-display text-xl leading-snug">{service.title}</h3>
+                            {service.comment ? (
+                              <p className="mt-1 max-w-xl text-sm text-muted-foreground">{service.comment}</p>
+                            ) : null}
+                          </div>
+                          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:shrink-0 sm:justify-end">
+                            <div className="flex items-center gap-2">
+                              {duration ? (
+                                <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+                                  {duration}
+                                </span>
+                              ) : null}
+                              <span className="font-display text-xl whitespace-nowrap tabular-nums">{formatPrice(service)}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => toggle(service.id)}
+                              data-magnetic
+                              aria-label="Додати в консультаційний сет"
+                              aria-pressed={selected.includes(service.id)}
+                              className={`flex h-9 w-9 items-center justify-center rounded-full border transition-colors ${
+                                selected.includes(service.id)
+                                  ? "border-accent bg-accent text-accent-foreground"
+                                  : "border-border text-muted-foreground hover:border-accent hover:text-foreground"
+                              }`}
+                            >
+                              {selected.includes(service.id) ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                            </button>
+                            <BookingDialog
+                              serviceIds={[service.id]}
+                              trigger={({ onClick }) => (
+                                <button
+                                  type="button"
+                                  onClick={onClick}
+                                  data-magnetic
+                                  className="rounded-full border border-primary px-4 py-2 text-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+                                >
+                                  Записатися
+                                </button>
+                              )}
+                            />
+                          </div>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ))}
+          </div>
+          {catalog.status === "ready" && groups.length === 0 ? (
             <p className="py-16 text-center text-sm text-muted-foreground">
               Нічого не знайдено. Спробуйте інший запит або напишіть нам у Direct.
             </p>
