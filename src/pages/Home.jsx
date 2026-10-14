@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
 import { images, licenseRows, site } from "../data.js";
 import { formatDuration, formatMoney, formatPrice, servicesInCategory } from "../altegio.js";
-import { useReveal, useScrollY } from "../hooks.js";
+import { useReveal } from "../hooks.js";
+import { pages, usePageMeta } from "../seo.js";
 import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
@@ -29,15 +30,12 @@ const approaches = [
 ];
 
 export default function Home() {
-  const scrollY = useScrollY();
   useReveal([]);
-  useEffect(() => {
-    document.title = "ARS VITAE SANCTUM — свідома косметологія у Чернівцях";
-  }, []);
+  usePageMeta(pages.home);
 
   return (
     <main>
-      <Hero scrollY={scrollY} />
+      <Hero />
       <Approach />
       <Pillars />
       <Team />
@@ -48,20 +46,39 @@ export default function Home() {
   );
 }
 
-function Hero({ scrollY }) {
+function Hero() {
+  const photo = useRef(null);
+
+  useEffect(() => {
+    const node = photo.current;
+    if (!node) return undefined;
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        node.style.transform = `translateY(${window.scrollY * -0.12}px) scale(1.06)`;
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
     <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-5 pt-28 pb-28 md:px-10 md:pt-32 lg:pb-16">
       <div className="absolute inset-0 -z-10">
         <img
+          ref={photo}
           src={images.hero}
           alt="Інтер'єр простору ARS VITAE SANCTUM у теплих алебастрових тонах"
           width={1600}
           height={1104}
+          fetchPriority="high"
           className="h-[118%] w-full object-cover"
-          style={{
-            transform: `translateY(${scrollY * -0.12}px) scale(1.06)`,
-            filter: "blur(2px) saturate(1.02)",
-          }}
+          style={{ transform: "scale(1.06)" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/25" />
         <div className="animate-veil absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
@@ -254,7 +271,10 @@ function Pillars() {
                 <img
                   src={index % 2 === 0 ? images.portrait : images.texture}
                   alt=""
+                  width={index % 2 === 0 ? 1008 : 1200}
+                  height={index % 2 === 0 ? 1312 : 800}
                   loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
                 <div
@@ -402,29 +422,54 @@ function Proof() {
               caption="Потягніть повзунок, щоб порівняти фото до і після."
             />
           </div>
-          <div className="reveal bento-card">
-            <a
-              href={site.instagram}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Профіль Instagram @ars.vitae.sanctum"
-              className="relative block overflow-hidden bg-card"
-              style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
-            >
-              <iframe
-                title="Профіль Instagram @ars.vitae.sanctum"
-                src={instagramEmbed}
-                scrolling="no"
-                tabIndex={-1}
-                loading="lazy"
-                className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
-                style={{ transform: "scale(calc(100cqw / 960px))" }}
-              />
-            </a>
-          </div>
+          <InstagramProfile />
         </div>
       </div>
     </section>
+  );
+}
+
+function InstagramProfile() {
+  const frame = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const node = frame.current;
+    if (!node) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setVisible(true);
+        observer.disconnect();
+      },
+      { rootMargin: "400px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={frame} className="reveal bento-card">
+      <a
+        href={site.instagram}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Профіль Instagram @ars.vitae.sanctum"
+        className="relative block overflow-hidden bg-card"
+        style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
+      >
+        {visible ? (
+          <iframe
+            title="Профіль Instagram @ars.vitae.sanctum"
+            src={instagramEmbed}
+            scrolling="no"
+            tabIndex={-1}
+            className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
+            style={{ transform: "scale(calc(100cqw / 960px))" }}
+          />
+        ) : null}
+      </a>
+    </div>
   );
 }
 

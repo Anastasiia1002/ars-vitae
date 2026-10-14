@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Check, ChevronDown, Plus, Search, Sparkles } from "lucide-react";
 import { formatDuration, formatPrice, formatQuote, quoteTotal, servicesInCategory } from "../altegio.js";
 import { useReveal } from "../hooks.js";
+import { pages, usePageMeta } from "../seo.js";
 import { useCatalog } from "../useAltegio.js";
 import BookingDialog from "../components/BookingDialog.jsx";
 
@@ -18,9 +19,7 @@ export default function Price() {
     setFilter(params.get("category") || "all");
   }, [params]);
 
-  useEffect(() => {
-    document.title = "Інтерактивний прайс-лист — ARS VITAE SANCTUM, Чернівці";
-  }, []);
+  usePageMeta(pages.price);
 
   const activeCategory = catalog.categories.find((category) => String(category.id) === String(filter));
 

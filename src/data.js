@@ -1,11 +1,11 @@
 const asset = (path) => `${import.meta.env.BASE_URL}${path}`;
 
 export const images = {
-  hero: asset("images/hero.jpg"),
-  portrait: asset("images/portrait.jpg"),
-  texture: asset("images/texture.jpg"),
-  before: asset("images/before.jpg"),
-  after: asset("images/after.jpg"),
+  hero: asset("images/hero.webp"),
+  portrait: asset("images/portrait.webp"),
+  texture: asset("images/texture.webp"),
+  before: asset("images/before.webp"),
+  after: asset("images/after.webp"),
 };
 
 export const site = {

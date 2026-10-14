@@ -2,19 +2,35 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Instagram, MapPin, Menu, MessageCircle, Phone, Send, X } from "lucide-react";
 import { site } from "../data.js";
-import { useScrollY } from "../hooks.js";
 import BookingDialog from "./BookingDialog.jsx";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
-  const scrollY = useScrollY();
 
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
 
-  const solid = menuOpen || scrollY > 8;
+  useEffect(() => {
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const next = window.scrollY > 8;
+        setScrolled((current) => (current === next ? current : next));
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const solid = menuOpen || scrolled;
 
   return (
     <header
