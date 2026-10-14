@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
-import { images, licenseRows, quotes, site } from "../data.js";
+import { images, licenseRows, site } from "../data.js";
 import { formatDuration, formatMoney, formatPrice, servicesInCategory } from "../altegio.js";
 import { useReveal, useScrollY } from "../hooks.js";
-import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
 import Team from "../components/Team.jsx";
@@ -387,59 +386,30 @@ function PriceTeaser() {
 }
 
 function Proof() {
-  const storyImages = [images.portrait, images.hero, images.texture, images.hero, images.texture, images.portrait];
   return (
-    <section className="border-t border-border py-20 sm:py-24 md:py-32">
+    <section className="border-t border-border py-16 sm:py-24 md:py-32">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
-          <h2 className="font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Візуальні докази</h2>
+          <div>
+            <p className="eyebrow">Instagram</p>
+            <h2 className="mt-3 font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Стрічка простору</h2>
+          </div>
           <a
             href={site.instagram}
             target="_blank"
             rel="noreferrer"
-            data-magnetic
             className="text-sm underline underline-offset-8"
           >
             @ars.vitae.sanctum
           </a>
         </div>
-        <div className="mt-10 grid gap-4 sm:mt-12 md:grid-cols-12 md:gap-5">
-          <div className="reveal md:col-span-6">
-            <BeforeAfter
-              before={images.before}
-              after={images.after}
-              caption="Курс: діагностика шкіри + 6 авторських доглядів + корекція дефіцитів. Фото публікуються лише за письмовою згодою клієнта."
-            />
-          </div>
-          <div className="reveal bento-card md:col-span-6">
-            <div className="border-b border-border px-6 py-4">
-              <p className="eyebrow">Stories · live</p>
-            </div>
-            <div className="grid grid-cols-3 gap-px bg-border">
-              {storyImages.map((src, index) => (
-                <a
-                  key={index}
-                  href={site.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group relative aspect-square overflow-hidden bg-card"
-                >
-                  <img
-                    src={src}
-                    alt="Публікація студії в Instagram"
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                  />
-                </a>
-              ))}
-            </div>
-          </div>
-          {quotes.map((item) => (
-            <blockquote key={item.a} className="reveal bento-card p-6 sm:p-7 md:col-span-6 lg:col-span-4">
-              <p className="font-display text-xl leading-snug italic">«{item.q}»</p>
-              <footer className="eyebrow mt-4">{item.a}</footer>
-            </blockquote>
-          ))}
+        <div className="reveal bento-card mt-8 overflow-hidden sm:mt-10">
+          <iframe
+            title="Останні публікації @ars.vitae.sanctum в Instagram"
+            src="https://www.instagram.com/ars.vitae.sanctum/embed/"
+            className="h-[440px] w-full bg-card sm:h-[760px] lg:h-[1040px]"
+            loading="lazy"
+          />
         </div>
       </div>
     </section>
