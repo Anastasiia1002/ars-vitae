@@ -343,7 +343,9 @@ function BookingForm({ presetServiceIds, presetStaffId, presetStaffName, onClose
             ) : (
               <span />
             )}
-            <p className="eyebrow">{STEP_LABEL[step]}</p>
+            <p className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-foreground">
+              {STEP_LABEL[step]}
+            </p>
           </div>
           <div className="max-h-[min(32rem,calc(100svh-14rem))] overflow-y-auto pr-1">
             {step === "service" ? (
@@ -454,40 +456,45 @@ function ServiceStep({ catalog, services, query, onQuery, multi, selected, onCho
     .filter((group) => group.items.length);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <input
         value={query}
         onChange={(event) => onQuery(event.target.value)}
         placeholder="Пошук послуги"
-        className="field-input"
+        className="w-full rounded-2xl border border-border bg-secondary/50 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
       />
       {groups.length === 0 ? <Status>Нічого не знайдено.</Status> : null}
       {groups.map((group) => (
-        <div key={group.category.id}>
-          <p className="eyebrow">{group.category.title}</p>
-          <ul className="mt-2 divide-y divide-border">
+        <section key={group.category.id} className="overflow-hidden rounded-2xl border border-border">
+          <h3 className="bg-secondary px-4 py-2.5 text-sm font-medium text-foreground">{group.category.title}</h3>
+          <ul>
             {group.items.map((service) => {
               const active = selected.includes(service.id);
+              const meta = [formatDuration(service.duration), formatPrice(service)].filter(Boolean).join(" · ");
               return (
-                <li key={service.id}>
+                <li key={service.id} className="border-t border-border">
                   <button
                     type="button"
                     onClick={() => (multi ? onToggle(service.id) : onChoose(service.id))}
-                    className={`flex w-full items-start justify-between gap-3 py-3 text-left ${active ? "text-accent" : ""}`}
+                    className={`flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition-colors hover:bg-secondary/45 ${
+                      active ? "bg-secondary/70" : "bg-card"
+                    }`}
                   >
-                    <span>
-                      <span className="block text-sm">{service.title}</span>
-                      <span className="mt-1 block text-xs text-muted-foreground">
-                        {[formatDuration(service.duration), formatPrice(service)].filter(Boolean).join(" · ")}
-                      </span>
+                    <span className="min-w-0">
+                      <span className="block text-sm font-medium leading-snug">{service.title}</span>
+                      {multi ? (
+                        <span className="mt-1 block text-xs text-muted-foreground">{active ? "Обрано" : "Додати"}</span>
+                      ) : null}
                     </span>
-                    {multi ? <span className="text-xs">{active ? "обрано" : "додати"}</span> : null}
+                    {meta ? (
+                      <span className="shrink-0 text-right text-xs leading-relaxed text-muted-foreground">{meta}</span>
+                    ) : null}
                   </button>
                 </li>
               );
             })}
           </ul>
-        </div>
+        </section>
       ))}
       {multi ? (
         <button
@@ -509,11 +516,15 @@ function StaffStep({ state, anyLabel, showAny, onChoose }) {
   if (!state.items.length && !showAny) return <Status>На цю послугу зараз немає фахівця з вільними вікнами.</Status>;
 
   return (
-    <ul className="divide-y divide-border">
+    <ul className="space-y-2">
       {showAny ? (
         <li>
-          <button type="button" onClick={() => onChoose(0, anyLabel)} className="w-full py-3 text-left text-sm">
-            {anyLabel}
+          <button
+            type="button"
+            onClick={() => onChoose(0, anyLabel)}
+            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-left transition-colors hover:bg-secondary/60"
+          >
+            <span className="block text-sm font-medium">{anyLabel}</span>
             <span className="mt-1 block text-xs text-muted-foreground">Перше вільне вікно</span>
           </button>
         </li>
@@ -523,9 +534,9 @@ function StaffStep({ state, anyLabel, showAny, onChoose }) {
           <button
             type="button"
             onClick={() => onChoose(member.id, member.name)}
-            className="w-full py-3 text-left"
+            className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-left transition-colors hover:bg-secondary/60"
           >
-            <span className="block text-sm">{member.name}</span>
+            <span className="block text-sm font-medium">{member.name}</span>
             <span className="mt-1 block text-xs text-muted-foreground">
               {[member.position?.title, member.specialization].filter(Boolean).join(" · ")}
             </span>
@@ -553,7 +564,7 @@ function DateStep({ state, onChoose }) {
     <div className="space-y-4">
       {[...groups].map(([label, items]) => (
         <div key={label}>
-          <p className="eyebrow">{label}</p>
+          <h3 className="mb-2 text-sm font-medium capitalize">{label}</h3>
           <div className="mt-2 flex flex-wrap gap-2">
             {items.map((iso) => {
               const date = new Date(`${iso}T12:00:00`);
@@ -605,7 +616,7 @@ function TimeStep({ state, onChoose }) {
 function Field({ label, children }) {
   return (
     <label className="block">
-      <span className="eyebrow">{label}</span>
+      <span className="text-xs font-medium text-foreground">{label}</span>
       <div className="mt-1">{children}</div>
     </label>
   );

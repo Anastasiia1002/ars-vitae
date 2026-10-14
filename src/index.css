@@ -195,7 +195,7 @@ img {
   display: grid;
   place-items: center;
   padding: 1.25rem;
-  background: color-mix(in oklab, black 72%, transparent);
+  background: color-mix(in oklab, var(--graphite) 28%, transparent);
 }
 
 .modal-panel {
@@ -203,6 +203,9 @@ img {
   width: min(100%, 32rem);
   max-height: calc(100svh - 2.5rem);
   overflow: auto;
+  background: var(--card);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   animation: rise-in 0.45s var(--ease-lux) both;
 }
 
