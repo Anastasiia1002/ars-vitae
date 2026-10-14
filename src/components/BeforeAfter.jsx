@@ -31,13 +31,13 @@ export default function BeforeAfter({ before, after, caption }) {
       >
         <img
           src={after}
-          alt="Результат після курсу процедур"
+          alt="Фото після"
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <img
           src={before}
-          alt="Стан до початку курсу"
+          alt="Фото до"
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover"
           style={{

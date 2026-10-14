@@ -4,6 +4,7 @@ import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
 import { images, licenseRows, site } from "../data.js";
 import { formatDuration, formatMoney, formatPrice, servicesInCategory } from "../altegio.js";
 import { useReveal, useScrollY } from "../hooks.js";
+import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
 import Team from "../components/Team.jsx";
@@ -402,55 +403,37 @@ function Proof() {
             @ars.vitae.sanctum
           </a>
         </div>
-        <div className="mt-8 grid gap-4 sm:mt-10 md:grid-cols-2 md:gap-5">
-          <figure className="reveal bento-card">
-            <InstagramCrop
-              label="Остання публікація @ars.vitae.sanctum"
-              aspect="4 / 3"
-              crop={{ width: 319, height: 239, x: 0, y: 158 }}
+        <div className="mt-8 grid items-start gap-4 sm:mt-10 md:grid-cols-2 md:gap-5">
+          <div className="reveal">
+            <BeforeAfter
+              before={images.before}
+              after={images.after}
+              caption="Потягніть повзунок, щоб порівняти фото до і після."
             />
-            <figcaption className="border-t border-border px-5 py-4 text-sm text-muted-foreground">
-              Остання публікація з Instagram @ars.vitae.sanctum.
-            </figcaption>
-          </figure>
+          </div>
           <div className="reveal bento-card">
-            <div className="border-b border-border px-6 py-4">
-              <p className="eyebrow">Stories · live</p>
-            </div>
-            <InstagramCrop
-              label="Шість останніх публікацій @ars.vitae.sanctum"
-              aspect="3 / 2"
-              crop={{ width: 960, height: 640, x: 0, y: 158 }}
-            />
+            <a
+              href={site.instagram}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Профіль Instagram @ars.vitae.sanctum"
+              className="relative block overflow-hidden bg-card"
+              style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
+            >
+              <iframe
+                title="Профіль Instagram @ars.vitae.sanctum"
+                src={instagramEmbed}
+                scrolling="no"
+                tabIndex={-1}
+                loading="lazy"
+                className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
+                style={{ transform: "scale(calc(100cqw / 960px))" }}
+              />
+            </a>
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function InstagramCrop({ label, aspect, crop }) {
-  return (
-    <a
-      href={site.instagram}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={label}
-      className="relative block overflow-hidden bg-card"
-      style={{ containerType: "inline-size", aspectRatio: aspect }}
-    >
-      <iframe
-        title={label}
-        src={instagramEmbed}
-        scrolling="no"
-        tabIndex={-1}
-        loading="lazy"
-        className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
-        style={{
-          transform: `scale(calc(100cqw / ${crop.width}px)) translate(${-crop.x}px, ${-crop.y}px)`,
-        }}
-      />
-    </a>
   );
 }
 
