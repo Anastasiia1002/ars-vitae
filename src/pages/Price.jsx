@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Check, Plus, Search, Sparkles } from "lucide-react";
+import { Check, ChevronDown, Plus, Search, Sparkles } from "lucide-react";
 import { formatDuration, formatPrice, formatQuote, quoteTotal, servicesInCategory } from "../altegio.js";
 import { useReveal } from "../hooks.js";
 import { useCatalog } from "../useAltegio.js";
@@ -59,8 +59,24 @@ export default function Price() {
 
       <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="min-w-0">
-          <div className="sticky top-[4.25rem] z-30 -mx-1 flex flex-col gap-4 bg-background/90 px-1 py-3 backdrop-blur-md lg:top-24">
-            <div className="chip-scroller -mx-1 px-1 pb-1 md:flex-wrap md:overflow-visible">
+          <div className="sticky top-[4.25rem] z-30 -mx-1 flex flex-col gap-3 bg-background/95 px-1 py-3 backdrop-blur-md lg:top-24">
+            <label className="relative block md:hidden">
+              <span className="sr-only">Напрям</span>
+              <select
+                value={String(filter)}
+                onChange={(event) => setFilter(event.target.value)}
+                className="min-h-12 w-full appearance-none rounded-2xl border border-border bg-card px-4 pr-11 text-base outline-none"
+              >
+                <option value="all">Всі послуги</option>
+                {catalog.categories.map((item) => (
+                  <option key={item.id} value={String(item.id)}>
+                    {item.title}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            </label>
+            <div className="chip-scroller -mx-1 hidden px-1 pb-1 md:flex md:flex-wrap md:overflow-visible">
               <FilterButton active={filter === "all"} onClick={() => setFilter("all")}>
                 Всі послуги
               </FilterButton>
@@ -74,13 +90,13 @@ export default function Price() {
                 </FilterButton>
               ))}
             </div>
-            <label className="flex items-center gap-3 border-b border-border pb-2">
+            <label className="flex min-h-12 items-center gap-3 rounded-2xl border border-border bg-card px-4">
               <Search className="h-4 w-4 shrink-0 text-muted-foreground" strokeWidth={1.4} />
               <input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Пошук за назвою або запитом"
-                className="w-full bg-transparent py-1 text-sm outline-none placeholder:text-muted-foreground"
+                placeholder="Пошук за назвою"
+                className="w-full bg-transparent py-3 text-base outline-none placeholder:text-muted-foreground"
               />
             </label>
           </div>
@@ -97,9 +113,9 @@ export default function Price() {
           <div className="mt-4 space-y-6">
             {groups.map((group) => (
               <section key={group.category.id} className="overflow-hidden rounded-2xl border border-border">
-                <header className="flex items-baseline justify-between gap-3 bg-secondary px-4 py-3 sm:px-5">
-                  <h2 className="font-display text-2xl leading-tight">{group.category.title}</h2>
-                  <span className="shrink-0 text-xs text-muted-foreground">{group.items.length}</span>
+                <header className="flex items-start justify-between gap-3 bg-secondary px-4 py-3 sm:items-baseline sm:px-5">
+                  <h2 className="min-w-0 font-display text-xl leading-snug sm:text-2xl">{group.category.title}</h2>
+                  <span className="shrink-0 rounded-full bg-card px-2.5 py-1 text-xs text-muted-foreground">{group.items.length}</span>
                 </header>
                 <ul>
                   {group.items.map((service) => {
