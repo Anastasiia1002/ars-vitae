@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowUpRight,
-  BadgeCheck,
-  Car,
-  Clock,
-  MapPin,
-  Sparkles,
-} from "lucide-react";
+import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
 import { images, licenseRows, quotes, site } from "../data.js";
 import { formatDuration, formatMoney, formatPrice, servicesInCategory } from "../altegio.js";
-import { useReveal, useScrollY, useTilt } from "../hooks.js";
+import { useReveal, useScrollY } from "../hooks.js";
 import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
@@ -58,7 +51,7 @@ export default function Home() {
 function Hero({ scrollY }) {
   const [soft, setSoft] = useState(false);
   return (
-    <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-5 pt-28 pb-28 md:px-10 md:pt-32 md:pb-16">
+    <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-5 pt-28 pb-28 md:px-10 md:pt-32 lg:pb-16">
       <div className="absolute inset-0 -z-10">
         <img
           src={images.hero}
@@ -76,7 +69,7 @@ function Hero({ scrollY }) {
       </div>
       <div className="mx-auto w-full max-w-[1500px]">
         <p className="eyebrow animate-rise">Чернівці · Licensed medical practice</p>
-        <h1 className="mt-5 font-display text-[15vw] leading-[0.82] tracking-[-0.02em] sm:text-[13vw] md:text-[10.5vw]">
+        <h1 className="mt-5 max-w-full font-display text-[2.65rem] leading-[0.9] tracking-[-0.02em] min-[420px]:text-[3.25rem] sm:text-6xl md:text-[10.5vw] md:leading-[0.82]">
           <span className="kinetic-line">
             <span className="animate-rise block">ARS VITAE</span>
           </span>
@@ -86,7 +79,7 @@ function Hero({ scrollY }) {
             </span>
           </span>
         </h1>
-        <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+        <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <p
             className="animate-rise max-w-md text-sm leading-relaxed text-muted-foreground md:text-base"
             style={{ animationDelay: "0.24s" }}
@@ -95,18 +88,18 @@ function Hero({ scrollY }) {
             <br />
             Ліцензія МОЗ України.
           </p>
-          <div className="animate-rise flex flex-wrap gap-2" style={{ animationDelay: "0.32s" }}>
+          <div className="animate-rise flex w-full max-w-md flex-col gap-2 sm:max-w-none sm:flex-row sm:flex-wrap" style={{ animationDelay: "0.32s" }}>
             <a
               href="#pillars"
               data-magnetic
-              className="glass-panel rounded-full px-5 py-3 text-xs tracking-[0.1em] uppercase"
+              className="glass-panel rounded-full px-5 py-3 text-center text-xs tracking-[0.1em] uppercase"
             >
               Презентація послуг
             </a>
             <Link
               to="/price"
               data-magnetic
-              className="glass-panel rounded-full px-5 py-3 text-xs tracking-[0.1em] uppercase"
+              className="glass-panel rounded-full px-5 py-3 text-center text-xs tracking-[0.1em] uppercase"
             >
               Інтерактивний прайс-лист
             </Link>
@@ -116,7 +109,7 @@ function Hero({ scrollY }) {
                   type="button"
                   onClick={onClick}
                   data-magnetic
-                  className="rounded-full bg-primary px-5 py-3 text-xs tracking-[0.1em] text-primary-foreground uppercase transition-transform duration-500 hover:scale-[1.04]"
+                  className="rounded-full bg-primary px-5 py-3 text-xs tracking-[0.1em] text-primary-foreground uppercase"
                 >
                   Онлайн-запис
                 </button>
@@ -144,7 +137,7 @@ function Approach() {
       <div className="grid gap-4 md:grid-cols-12 md:gap-5">
         <div className="reveal md:col-span-7">
           <p className="eyebrow">Підхід Sanctum</p>
-          <h2 className="mt-4 font-display text-[9vw] leading-[0.92] md:text-[4.4vw]">
+          <h2 className="mt-4 font-display text-[1.85rem] leading-[1.05] sm:text-5xl md:text-[4.4vw] md:leading-[0.92]">
             Ендокринологія + дерматологія + практики тіла =
             <span className="text-accent italic"> тривала краса</span>
           </h2>
@@ -204,20 +197,28 @@ function Approach() {
 function Pillars() {
   const catalog = useCatalog();
   const [active, setActive] = useState(0);
+  const scrollerRef = useRef(null);
   const categories = catalog.categories;
   const index = categories.length ? Math.min(active, categories.length - 1) : 0;
   const category = categories[index];
   const items = category ? servicesInCategory(catalog.services, category) : [];
-  const preview = items.slice(0, 3);
+  const preview = items.slice(0, 4);
+  const hiddenCount = Math.max(0, items.length - preview.length);
   useReveal([catalog.status, index]);
 
+  useEffect(() => {
+    const root = scrollerRef.current;
+    if (!root || root.scrollWidth <= root.clientWidth + 8) return;
+    root.querySelector("[data-active='true']")?.scrollIntoView({ inline: "center", block: "nearest" });
+  }, [index, categories.length]);
+
   return (
-    <section id="pillars" className="border-y border-border bg-secondary/40 py-20 sm:py-24 md:py-32">
+    <section id="pillars" className="border-y border-border bg-secondary/40 py-16 sm:py-24 md:py-32">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
-        <div className="reveal flex flex-wrap items-end justify-between gap-6">
-          <div>
+        <div className="reveal flex flex-wrap items-end justify-between gap-4">
+          <div className="min-w-0">
             <p className="eyebrow">Напрями</p>
-            <h2 className="mt-3 font-display text-[10vw] leading-[0.9] md:text-[5vw]">Простір процедур</h2>
+            <h2 className="mt-3 font-display text-[2.4rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Простір процедур</h2>
           </div>
           <Link
             to="/price"
@@ -237,17 +238,17 @@ function Pillars() {
         ) : null}
         {category ? (
           <>
-            <div className="reveal mt-10 flex max-w-full gap-2 overflow-x-auto pb-1 sm:mt-12 md:flex-wrap">
+            <div ref={scrollerRef} className="chip-scroller chip-wrap reveal mt-8 pb-1 sm:mt-10">
               {categories.map((item, itemIndex) => (
                 <button
                   key={item.id}
                   type="button"
-                  data-magnetic
+                  data-active={itemIndex === index}
                   onClick={() => setActive(itemIndex)}
-                  className={`shrink-0 rounded-full border px-4 py-2 text-left text-xs tracking-wide transition-all duration-500 ${
+                  className={`shrink-0 snap-start rounded-full border px-4 py-2.5 text-left text-sm transition-colors ${
                     itemIndex === index
                       ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border text-muted-foreground hover:border-accent hover:text-foreground"
+                      : "border-border bg-card text-muted-foreground hover:border-accent hover:text-foreground"
                   }`}
                 >
                   <span className="mr-2 opacity-60">{String(itemIndex + 1).padStart(2, "0")}</span>
@@ -255,72 +256,77 @@ function Pillars() {
                 </button>
               ))}
             </div>
-            <div className="mt-8 grid gap-4 md:grid-cols-12 md:gap-5">
-              <TiltCard className="md:col-span-5 md:row-span-2">
-                <div className="relative h-full min-h-[280px] overflow-hidden sm:min-h-[320px]">
-                  <img
-                    src={index % 2 === 0 ? images.portrait : images.texture}
-                    alt={category.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-105"
-                  />
-                  <div
-                    className="absolute inset-x-0 bottom-0 p-6"
-                    style={{ background: "linear-gradient(to top, var(--card), transparent)" }}
+            <div className="mt-5 grid gap-4 lg:mt-6 lg:grid-cols-12 lg:items-start lg:gap-5">
+              <div className="reveal relative h-52 overflow-hidden rounded-[calc(var(--radius)+8px)] border border-border sm:h-72 lg:col-span-5 lg:h-auto lg:min-h-[28rem] lg:self-stretch">
+                <img
+                  src={index % 2 === 0 ? images.portrait : images.texture}
+                  alt=""
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div
+                  className="absolute inset-x-0 bottom-0 p-5 sm:p-6"
+                  style={{ background: "linear-gradient(to top, var(--card), transparent)" }}
+                >
+                  <p className="eyebrow">{String(index + 1).padStart(2, "0")}</p>
+                  <h3 className="mt-1 font-display text-3xl leading-tight sm:text-4xl">{category.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{categorySummary(items)}</p>
+                </div>
+              </div>
+              <div className="reveal bento-card flex flex-col lg:col-span-7">
+                {preview.length === 0 ? (
+                  <p className="px-5 py-6 text-sm text-muted-foreground">У цьому напрямі зараз немає послуг для запису.</p>
+                ) : (
+                  <ul className="flex flex-1 flex-col">
+                    {preview.map((service) => {
+                      const duration = formatDuration(service.duration);
+                      return (
+                        <li key={service.id} className="border-b border-border last:border-b-0">
+                          <div className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="min-w-0">
+                              <h4 className="font-display text-xl leading-snug">{service.title}</h4>
+                              {service.comment ? (
+                                <p className="mt-1 text-sm text-muted-foreground">{service.comment}</p>
+                              ) : null}
+                              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                                {duration ? (
+                                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1">
+                                    <Clock className="h-3 w-3" /> {duration}
+                                  </span>
+                                ) : null}
+                                <span className="rounded-full border border-border px-3 py-1 whitespace-nowrap">
+                                  {formatPrice(service)}
+                                </span>
+                              </div>
+                            </div>
+                            <BookingDialog
+                              serviceIds={[service.id]}
+                              trigger={({ onClick }) => (
+                                <button
+                                  type="button"
+                                  onClick={onClick}
+                                  className="min-h-11 w-full shrink-0 rounded-full border border-primary px-5 py-2.5 text-sm transition-colors hover:bg-primary hover:text-primary-foreground sm:w-auto"
+                                >
+                                  Записатися
+                                </button>
+                              )}
+                            />
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+                {hiddenCount > 0 ? (
+                  <Link
+                    to={`/price?category=${category.id}`}
+                    className="flex items-center justify-between gap-3 px-5 py-4 text-sm text-muted-foreground"
                   >
-                    <p className="eyebrow">{String(index + 1).padStart(2, "0")}</p>
-                    <h3 className="mt-1 font-display text-3xl">{category.title}</h3>
-                    <p className="text-sm text-muted-foreground">{categorySummary(items)}</p>
-                  </div>
-                </div>
-              </TiltCard>
-              <TiltCard className="md:col-span-7">
-                <div className="p-7 md:p-10">
-                  <Sparkles className="h-5 w-5 text-accent" strokeWidth={1.2} />
-                  <p className="mt-4 font-display text-2xl leading-snug md:text-4xl">{categorySummary(items)}</p>
-                  <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-                    Кілька послуг цього напряму. Повний список і запис — у прайсі.
-                  </p>
-                </div>
-              </TiltCard>
-              {preview.map((service) => {
-                const duration = formatDuration(service.duration);
-                return (
-                  <TiltCard key={service.id} className="md:col-span-7">
-                    <div className="flex flex-col gap-5 p-6 sm:p-7 md:flex-row md:items-center md:justify-between">
-                      <div className="max-w-md">
-                        <h4 className="font-display text-2xl">{service.title}</h4>
-                        {service.comment ? (
-                          <p className="mt-2 text-sm text-muted-foreground">{service.comment}</p>
-                        ) : null}
-                        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                          {duration ? (
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1">
-                              <Clock className="h-3 w-3" /> {duration}
-                            </span>
-                          ) : null}
-                          <span className="rounded-full border border-border px-3 py-1 whitespace-nowrap">
-                            {formatPrice(service)}
-                          </span>
-                        </div>
-                      </div>
-                      <BookingDialog
-                        serviceIds={[service.id]}
-                        trigger={({ onClick }) => (
-                          <button
-                            type="button"
-                            onClick={onClick}
-                            data-magnetic
-                            className="shrink-0 self-start rounded-full border border-primary px-5 py-3 text-sm transition-colors duration-500 hover:bg-primary hover:text-primary-foreground md:self-auto"
-                          >
-                            Записатися
-                          </button>
-                        )}
-                      />
-                    </div>
-                  </TiltCard>
-                );
-              })}
+                    Ще {hiddenCount} у цьому напрямі
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                ) : null}
+              </div>
             </div>
           </>
         ) : null}
@@ -355,31 +361,16 @@ function serviceCount(count) {
   return `${count} послуг`;
 }
 
-function TiltCard({ children, className = "" }) {
-  const tilt = useTilt();
-  return (
-    <div
-      ref={tilt.ref}
-      onMouseMove={tilt.onMouseMove}
-      onMouseLeave={tilt.onMouseLeave}
-      className={`reveal bento-card bento-card-hover group ${className}`}
-    >
-      {children}
-    </div>
-  );
-}
-
 function PriceTeaser() {
   return (
     <section className="mx-auto max-w-[1500px] px-5 py-20 sm:py-24 md:px-10 md:py-32">
       <div className="reveal bento-card bento-wash relative overflow-hidden p-7 sm:p-8 md:p-16">
         <p className="eyebrow">Прайс-лист</p>
-        <h2 className="mt-4 max-w-3xl font-display text-[10vw] leading-[0.9] md:text-[5.2vw]">
+        <h2 className="mt-4 max-w-3xl font-display text-[1.85rem] leading-[1.05] sm:text-5xl md:text-[5.2vw] md:leading-[0.9]">
           Зберіть власний комплекс і побачте ціну одразу
         </h2>
         <p className="mt-6 max-w-lg text-sm text-muted-foreground">
-          Фільтри за напрямами, пошук у реальному часі, вартість у гривні та євро й калькулятор
-          персонального сету процедур.
+          Фільтри за напрямами, пошук і калькулятор візиту з кількох послуг.
         </p>
         <Link
           to="/price"
@@ -399,7 +390,7 @@ function Proof() {
     <section className="border-t border-border py-20 sm:py-24 md:py-32">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
-          <h2 className="font-display text-[10vw] leading-[0.9] md:text-[5vw]">Візуальні докази</h2>
+          <h2 className="font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Візуальні докази</h2>
           <a
             href={site.instagram}
             target="_blank"
@@ -461,7 +452,7 @@ function Location() {
       <div className="reveal bento-card grid gap-8 p-6 sm:p-8 md:grid-cols-2 md:p-14">
         <div>
           <p className="eyebrow">Локація</p>
-          <h2 className="mt-3 font-display text-5xl md:text-7xl">{site.city}</h2>
+          <h2 className="mt-3 font-display text-4xl sm:text-5xl md:text-7xl">{site.city}</h2>
           <p className="mt-4 text-sm text-muted-foreground">{site.address}</p>
           <div className="mt-6 flex flex-wrap gap-2">
             <a

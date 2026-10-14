@@ -472,7 +472,7 @@ function ServiceStep({ catalog, services, query, onQuery, multi, selected, onCho
                   <button
                     type="button"
                     onClick={() => (multi ? onToggle(service.id) : onChoose(service.id))}
-                    className={`flex w-full items-center justify-between gap-4 px-4 py-3 text-left transition-colors hover:bg-secondary/45 ${
+                    className={`flex w-full flex-col items-start gap-1 px-4 py-3 text-left transition-colors hover:bg-secondary/45 sm:flex-row sm:items-center sm:justify-between sm:gap-4 ${
                       active ? "bg-secondary/70" : "bg-card"
                     }`}
                   >
@@ -483,7 +483,7 @@ function ServiceStep({ catalog, services, query, onQuery, multi, selected, onCho
                       ) : null}
                     </span>
                     {meta ? (
-                      <span className="shrink-0 text-right text-xs leading-relaxed text-muted-foreground">{meta}</span>
+                      <span className="text-xs leading-relaxed text-muted-foreground sm:shrink-0 sm:text-right">{meta}</span>
                     ) : null}
                   </button>
                 </li>

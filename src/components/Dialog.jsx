@@ -42,7 +42,7 @@ export default function Dialog({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`modal-panel glass-panel rounded-3xl p-6 sm:p-8 ${className}`}
+        className={`modal-panel glass-panel rounded-t-3xl rounded-b-none p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:rounded-3xl sm:p-8 ${className}`}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <button

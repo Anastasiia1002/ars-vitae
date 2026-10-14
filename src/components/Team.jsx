@@ -12,7 +12,7 @@ export default function Team() {
       <div className="reveal flex flex-wrap items-end justify-between gap-6">
         <div>
           <p className="eyebrow">Команда</p>
-          <h2 className="mt-3 font-display text-[10vw] leading-[0.9] md:text-[5vw]">Фахівці Sanctum</h2>
+          <h2 className="mt-3 font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Фахівці Sanctum</h2>
         </div>
         <p className="max-w-sm text-sm text-muted-foreground">
           Лікарі та практики простору. Онлайн-запис відкриває вільні вікна саме до обраної людини.
@@ -26,9 +26,9 @@ export default function Team() {
         </p>
       ) : null}
 
-      <ul className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <ul className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {staff.map((member) => (
-          <li key={member.id} className="reveal bento-card flex gap-4 p-5 sm:p-6">
+          <li key={member.id} className="reveal bento-card flex min-w-0 gap-4 p-4 sm:p-6">
             <Portrait member={member} />
             <div className="min-w-0 flex-1">
               <p className="eyebrow">{member.position?.title || "Фахівець"}</p>
@@ -49,7 +49,7 @@ export default function Team() {
                         type="button"
                         onClick={onClick}
                         data-magnetic
-                        className="rounded-full border border-primary px-4 py-2 text-xs tracking-wide uppercase transition-colors duration-500 hover:bg-primary hover:text-primary-foreground"
+                        className="min-h-11 rounded-full border border-primary px-4 py-2 text-sm transition-colors duration-500 hover:bg-primary hover:text-primary-foreground"
                       >
                         Записатися
                       </button>

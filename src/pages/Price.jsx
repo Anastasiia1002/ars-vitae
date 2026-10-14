@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Check, Plus, Search, Sparkles } from "lucide-react";
 import { formatDuration, formatPrice, formatQuote, quoteTotal, servicesInCategory } from "../altegio.js";
 import { useReveal } from "../hooks.js";
@@ -7,10 +8,15 @@ import BookingDialog from "../components/BookingDialog.jsx";
 
 export default function Price() {
   const catalog = useCatalog();
-  const [filter, setFilter] = useState("all");
+  const [params] = useSearchParams();
+  const [filter, setFilter] = useState(() => params.get("category") || "all");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState([]);
   useReveal([filter, query, catalog.status]);
+
+  useEffect(() => {
+    setFilter(params.get("category") || "all");
+  }, [params]);
 
   useEffect(() => {
     document.title = "Інтерактивний прайс-лист — ARS VITAE SANCTUM, Чернівці";
@@ -37,9 +43,13 @@ export default function Price() {
   };
 
   return (
-    <main className="mx-auto max-w-[1500px] px-5 pt-28 pb-16 sm:pt-32 md:px-10 md:pt-44">
+    <main
+      className={`mx-auto max-w-[1500px] px-5 pt-28 sm:pt-32 md:px-10 lg:pt-40 ${
+        selected.length ? "pb-44 md:pb-36 lg:pb-16" : "pb-28 md:pb-16"
+      }`}
+    >
       <p className="eyebrow">Прайс-лист · {new Date().getFullYear()}</p>
-      <h1 className="mt-4 font-display text-[13vw] leading-[0.86] md:text-[7vw]">
+      <h1 className="mt-4 font-display text-[2.6rem] leading-[0.9] sm:text-6xl md:text-[7vw] md:leading-[0.86]">
         Прозорі
         <span className="block text-accent italic">умови</span>
       </h1>
@@ -49,8 +59,8 @@ export default function Price() {
 
       <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="min-w-0">
-          <div className="sticky top-16 z-30 -mx-1 flex flex-col gap-4 bg-background/85 px-1 py-4 backdrop-blur-md sm:top-20">
-            <div className="-mx-1 flex max-w-full gap-2 overflow-x-auto px-1 pb-1 md:flex-wrap">
+          <div className="sticky top-[4.25rem] z-30 -mx-1 flex flex-col gap-4 bg-background/90 px-1 py-3 backdrop-blur-md lg:top-24">
+            <div className="chip-scroller -mx-1 px-1 pb-1 md:flex-wrap md:overflow-visible">
               <FilterButton active={filter === "all"} onClick={() => setFilter("all")}>
                 Всі послуги
               </FilterButton>
@@ -134,7 +144,7 @@ export default function Price() {
                                   type="button"
                                   onClick={onClick}
                                   data-magnetic
-                                  className="rounded-full border border-primary px-4 py-2 text-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+                                  className="min-h-11 rounded-full border border-primary px-4 py-2 text-sm transition-colors hover:bg-primary hover:text-primary-foreground"
                                 >
                                   Записатися
                                 </button>
@@ -171,7 +181,7 @@ function FilterButton({ active, onClick, children }) {
       type="button"
       data-magnetic
       onClick={onClick}
-      className={`shrink-0 rounded-full border px-4 py-2 text-xs tracking-wide transition-all duration-500 ${
+      className={`min-h-11 shrink-0 snap-start rounded-full border px-4 py-2 text-sm transition-colors ${
         active
           ? "border-primary bg-primary text-primary-foreground"
           : "border-border text-muted-foreground hover:border-accent hover:text-foreground"
@@ -188,7 +198,7 @@ function Calculator({ services, selected, onToggle }) {
   const total = quoteTotal(chosen);
 
   return (
-    <div className="bento-card p-6 md:p-9">
+    <div id="visit" className="bento-card p-5 sm:p-6 md:p-9">
       <div className="flex items-start justify-between gap-6">
         <div>
           <p className="eyebrow">Калькулятор візиту</p>
@@ -239,8 +249,7 @@ function Calculator({ services, selected, onToggle }) {
                 <button
                   type="button"
                   onClick={onClick}
-                  data-magnetic
-                  className="shrink-0 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+                  className="min-h-11 shrink-0 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
                 >
                   Записатися
                 </button>
@@ -249,6 +258,31 @@ function Calculator({ services, selected, onToggle }) {
           </div>
         </div>
       ) : null}
+      {chosen.length > 0 ? (
+        <div className="fixed inset-x-0 z-40 px-3 md:hidden" style={{ bottom: "calc(4.75rem + env(safe-area-inset-bottom))" }}>
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-lg">
+            <div className="min-w-0">
+              <p className="text-xs text-muted-foreground">{serviceCountLabel(chosen.length)}</p>
+              <p className="font-display text-2xl whitespace-nowrap tabular-nums">{formatQuote(total)}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="min-h-11 shrink-0 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+            >
+              Записатися
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
+}
+
+function serviceCountLabel(count) {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${count} послуга`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} послуги`;
+  return `${count} послуг`;
 }
