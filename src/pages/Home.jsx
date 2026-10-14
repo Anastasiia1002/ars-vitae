@@ -403,13 +403,26 @@ function Proof() {
             @ars.vitae.sanctum
           </a>
         </div>
-        <div className="reveal bento-card mt-8 overflow-hidden sm:mt-10">
-          <iframe
-            title="Останні публікації @ars.vitae.sanctum в Instagram"
-            src="https://www.instagram.com/ars.vitae.sanctum/embed/"
-            className="h-[440px] w-full bg-card sm:h-[760px] lg:h-[1040px]"
-            loading="lazy"
-          />
+        <div className="reveal mx-auto mt-8 w-full max-w-[640px] sm:mt-10">
+          <a
+            href={site.instagram}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Відкрити Instagram @ars.vitae.sanctum"
+            className="bento-card relative block overflow-hidden"
+            style={{ containerType: "inline-size", aspectRatio: "640 / 372" }}
+          >
+            <iframe
+              title="Останні публікації @ars.vitae.sanctum в Instagram"
+              src="https://www.instagram.com/ars.vitae.sanctum/embed/"
+              scrolling="no"
+              tabIndex={-1}
+              loading="lazy"
+              className="pointer-events-none absolute top-0 left-0 h-[372px] w-[640px] max-w-none origin-top-left border-0"
+              style={{ transform: "scale(calc(100cqw / 640px))" }}
+            />
+          </a>
+          <p className="mt-3 text-sm text-muted-foreground">Натисніть, щоб відкрити профіль в Instagram.</p>
         </div>
       </div>
     </section>
