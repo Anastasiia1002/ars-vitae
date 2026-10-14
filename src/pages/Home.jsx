@@ -49,7 +49,6 @@ export default function Home() {
 }
 
 function Hero({ scrollY }) {
-  const [soft, setSoft] = useState(false);
   return (
     <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-5 pt-28 pb-28 md:px-10 md:pt-32 lg:pb-16">
       <div className="absolute inset-0 -z-10">
@@ -58,10 +57,10 @@ function Hero({ scrollY }) {
           alt="Інтер'єр простору ARS VITAE SANCTUM у теплих алебастрових тонах"
           width={1600}
           height={1104}
-          className="h-[118%] w-full object-cover transition-[filter] duration-1000"
+          className="h-[118%] w-full object-cover"
           style={{
             transform: `translateY(${scrollY * -0.12}px) scale(1.06)`,
-            filter: soft ? "blur(16px) saturate(1.05)" : "blur(2px) saturate(1.02)",
+            filter: "blur(2px) saturate(1.02)",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/25" />
@@ -117,14 +116,6 @@ function Hero({ scrollY }) {
             />
           </div>
         </div>
-        <button
-          type="button"
-          onClick={() => setSoft((value) => !value)}
-          data-magnetic
-          className="mt-8 text-xs tracking-[0.2em] text-muted-foreground uppercase transition-colors hover:text-foreground"
-        >
-          {soft ? "чіткий кадр" : "додати м'якості"}
-        </button>
       </div>
     </section>
   );
