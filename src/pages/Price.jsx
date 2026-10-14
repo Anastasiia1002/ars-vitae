@@ -211,7 +211,7 @@ function Calculator({ services, selected, onToggle }) {
                 className="flex items-center gap-2 text-left transition-opacity hover:opacity-60"
               >
                 <Check className="h-3.5 w-3.5 shrink-0 text-accent" />
-                <span>{service.title}</span>
+                <span className="line-clamp-2">{service.title}</span>
               </button>
               <span className="shrink-0 text-muted-foreground tabular-nums">{formatPrice(service)}</span>
             </li>
@@ -219,26 +219,28 @@ function Calculator({ services, selected, onToggle }) {
         </ul>
       )}
       {chosen.length > 0 ? (
-        <div className="mt-6 flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="eyebrow">{total.partial ? "Орієнтовно" : "Разом"}</p>
-            <p className="font-display text-4xl tabular-nums">{formatQuote(total)}</p>
+        <div className="mt-6 border-t border-border pt-5">
+          <div className="flex items-end justify-between gap-4">
+            <div className="min-w-0">
+              <p className="eyebrow">{total.partial ? "Орієнтовно" : "Разом"}</p>
+              <p className="mt-1 font-display text-3xl whitespace-nowrap tabular-nums">{formatQuote(total)}</p>
+            </div>
+            <BookingDialog
+              open={open}
+              onOpenChange={setOpen}
+              serviceIds={chosen.map((service) => service.id)}
+              trigger={({ onClick }) => (
+                <button
+                  type="button"
+                  onClick={onClick}
+                  data-magnetic
+                  className="shrink-0 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+                >
+                  Записатися
+                </button>
+              )}
+            />
           </div>
-          <BookingDialog
-            open={open}
-            onOpenChange={setOpen}
-            serviceIds={chosen.map((service) => service.id)}
-            trigger={({ onClick }) => (
-              <button
-                type="button"
-                onClick={onClick}
-                data-magnetic
-                className="rounded-full bg-primary px-6 py-3 text-xs font-medium tracking-[0.12em] text-primary-foreground uppercase transition-transform duration-500 hover:scale-[1.04]"
-              >
-                Записатися на сет
-              </button>
-            )}
-          />
         </div>
       ) : null}
     </div>
