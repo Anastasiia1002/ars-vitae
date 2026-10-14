@@ -59,7 +59,7 @@ export default function Price() {
 
       <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="min-w-0">
-          <div className="sticky top-[4.25rem] z-30 -mx-1 bg-background/95 px-1 py-2 backdrop-blur-md lg:top-24">
+          <div className="sticky top-[4.25rem] z-30 -mx-1 border-b border-border bg-background px-1 py-2 lg:top-24">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <label className="relative block min-w-0 sm:w-[min(100%,22rem)] sm:shrink-0">
                 <span className="sr-only">Напрям</span>
