@@ -385,15 +385,14 @@ function PriceTeaser() {
   );
 }
 
+const instagramEmbed = "https://www.instagram.com/ars.vitae.sanctum/embed/";
+
 function Proof() {
   return (
     <section className="border-t border-border py-16 sm:py-24 md:py-32">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="eyebrow">Instagram</p>
-            <h2 className="mt-3 font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Стрічка простору</h2>
-          </div>
+          <h2 className="font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Візуальні докази</h2>
           <a
             href={site.instagram}
             target="_blank"
@@ -403,29 +402,55 @@ function Proof() {
             @ars.vitae.sanctum
           </a>
         </div>
-        <div className="reveal mx-auto mt-8 w-full max-w-[640px] sm:mt-10">
-          <a
-            href={site.instagram}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Відкрити Instagram @ars.vitae.sanctum"
-            className="bento-card relative block overflow-hidden"
-            style={{ containerType: "inline-size", aspectRatio: "640 / 372" }}
-          >
-            <iframe
-              title="Останні публікації @ars.vitae.sanctum в Instagram"
-              src="https://www.instagram.com/ars.vitae.sanctum/embed/"
-              scrolling="no"
-              tabIndex={-1}
-              loading="lazy"
-              className="pointer-events-none absolute top-0 left-0 h-[372px] w-[640px] max-w-none origin-top-left border-0"
-              style={{ transform: "scale(calc(100cqw / 640px))" }}
+        <div className="mt-8 grid gap-4 sm:mt-10 md:grid-cols-2 md:gap-5">
+          <figure className="reveal bento-card">
+            <InstagramCrop
+              label="Остання публікація @ars.vitae.sanctum"
+              aspect="4 / 3"
+              crop={{ width: 319, height: 239, x: 0, y: 158 }}
             />
-          </a>
-          <p className="mt-3 text-sm text-muted-foreground">Натисніть, щоб відкрити профіль в Instagram.</p>
+            <figcaption className="border-t border-border px-5 py-4 text-sm text-muted-foreground">
+              Остання публікація з Instagram @ars.vitae.sanctum.
+            </figcaption>
+          </figure>
+          <div className="reveal bento-card">
+            <div className="border-b border-border px-6 py-4">
+              <p className="eyebrow">Stories · live</p>
+            </div>
+            <InstagramCrop
+              label="Шість останніх публікацій @ars.vitae.sanctum"
+              aspect="3 / 2"
+              crop={{ width: 960, height: 640, x: 0, y: 158 }}
+            />
+          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function InstagramCrop({ label, aspect, crop }) {
+  return (
+    <a
+      href={site.instagram}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={label}
+      className="relative block overflow-hidden bg-card"
+      style={{ containerType: "inline-size", aspectRatio: aspect }}
+    >
+      <iframe
+        title={label}
+        src={instagramEmbed}
+        scrolling="no"
+        tabIndex={-1}
+        loading="lazy"
+        className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
+        style={{
+          transform: `scale(calc(100cqw / ${crop.width}px)) translate(${-crop.x}px, ${-crop.y}px)`,
+        }}
+      />
+    </a>
   );
 }
 
