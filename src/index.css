@@ -1,8 +1,56 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Fixel Display";
+  src: url("./fonts/FixelDisplay-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fixel Display";
+  src: url("./fonts/FixelDisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fixel Display";
+  src: url("./fonts/FixelDisplay-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fixel Display";
+  src: url("./fonts/FixelDisplay-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Snell Roundhand";
+  src: local("Snell Roundhand"), local("Snell Roundhand Regular"), local("SnellRoundhand");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Snell Roundhand";
+  src: local("Snell Roundhand"), local("Snell Roundhand Regular"), local("SnellRoundhand");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme inline {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", "Times New Roman", serif;
+  --font-sans: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Snell Roundhand", "Fixel Display", ui-sans-serif, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -94,6 +142,7 @@ img {
 @layer components {
   .font-display {
     font-family: var(--font-display);
+    font-weight: 400;
   }
 
   .eyebrow {
