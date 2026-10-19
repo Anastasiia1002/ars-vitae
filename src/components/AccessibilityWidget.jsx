@@ -10,13 +10,6 @@ const SCALES = [
   { value: 150, label: "Дуже великий", mark: 36 },
 ];
 
-const CONTRASTS = [
-  { value: "default", label: "Звичайна", className: "bg-[#f7f4ee] text-[#2c2a28] border-[#cfc6b8]" },
-  { value: "light", label: "Чорним по білому", className: "bg-white text-black border-black" },
-  { value: "dark", label: "Білим по чорному", className: "bg-black text-white border-white" },
-  { value: "yellow", label: "Синім по жовтому", className: "bg-[#fff36b] text-[#062a9a] border-[#062a9a]" },
-];
-
 const TOGGLES = [
   { key: "readable", label: "Зручний шрифт", hint: "Без декоративних накреслень" },
   { key: "links", label: "Підкреслити посилання", hint: "Так легше відрізнити їх від тексту" },
@@ -83,7 +76,6 @@ export default function AccessibilityWidget({ onOpen }) {
   };
 
   const scaleLabel = SCALES.find((item) => item.value === prefs.scale)?.label ?? "Звичайний";
-  const contrastLabel = CONTRASTS.find((item) => item.value === prefs.contrast)?.label ?? "Звичайна";
 
   const panel = open
     ? createPortal(
@@ -141,30 +133,6 @@ export default function AccessibilityWidget({ onOpen }) {
                 })}
               </div>
               <p className="mt-2 text-sm text-muted-foreground">{scaleLabel}</p>
-            </div>
-
-            <div className="mt-5" role="group" aria-label="Контраст">
-              <p className="text-sm font-medium">Контраст</p>
-              <div className="mt-2 grid grid-cols-4 gap-2">
-                {CONTRASTS.map((item) => {
-                  const active = prefs.contrast === item.value;
-                  return (
-                    <button
-                      key={item.value}
-                      type="button"
-                      aria-pressed={active}
-                      aria-label={item.label}
-                      onClick={() => commit({ contrast: item.value }, `Контраст: ${item.label.toLowerCase()}`)}
-                      className={`flex h-14 items-center justify-center rounded-2xl border text-base font-medium ${item.className} ${
-                        active ? "outline-2 outline-solid outline-offset-2 outline-foreground" : ""
-                      }`}
-                    >
-                      <span aria-hidden>Аа</span>
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">{contrastLabel}</p>
             </div>
 
             <div className="mt-4 border-t border-border pt-3">
