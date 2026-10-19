@@ -74,11 +74,11 @@ function Hero({ scrollY }) {
       </div>
       <div className="mx-auto w-full max-w-[1500px]">
         <p className="eyebrow animate-rise">Чернівці · Licensed medical practice</p>
-        <h1 className="hero-lockup animate-rise mt-6">
-          <span className="hero-est">EST.2018</span>
-          <span className="hero-name">ARS VITAE</span>
-          <span className="hero-script">Sanctum</span>
-          <span className="hero-tag">Свідома косметологія, здоров'я та відновлення</span>
+        <h1 className="hero-title mt-5 max-w-full">
+          <span className="hero-name animate-rise block">ARS VITAE</span>
+          <span className="hero-script animate-rise block" style={{ animationDelay: "0.12s" }}>
+            Sanctum
+          </span>
         </h1>
         <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <p

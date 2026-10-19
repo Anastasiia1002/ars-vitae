@@ -234,64 +234,61 @@ img {
   animation: rise-in 0.9s var(--ease-lux) both;
 }
 
-.hero-lockup {
-  position: relative;
-  display: block;
-  width: 100%;
-  max-width: 44rem;
-  aspect-ratio: 682 / 187;
-  margin: 0;
-  container-type: inline-size;
-  font-weight: 400;
+.hero-title {
+  margin-bottom: 0;
   color: var(--foreground);
+  font-weight: 400;
 }
 
-.hero-est,
 .hero-name,
-.hero-script,
-.hero-tag {
-  position: absolute;
-  display: block;
-  margin: 0;
-  white-space: nowrap;
+.hero-script {
   font-weight: 400;
   font-style: normal;
 }
 
-.hero-est {
-  left: 11.6%;
-  top: 0.6%;
-  font-family: "Prata", "Times New Roman", serif;
-  font-size: 2.15cqw;
-  letter-spacing: 0.18em;
-  line-height: 1;
-}
-
 .hero-name {
-  left: 26%;
-  top: 0;
   font-family: "Prata", "Times New Roman", serif;
-  font-size: 13.4cqw;
-  letter-spacing: 0.012em;
-  line-height: 0.72;
+  font-size: 2.65rem;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
 }
 
 .hero-script {
-  left: -1%;
-  top: 22%;
+  margin-top: -0.08em;
   font-family: "Italianno", "Snell Roundhand", cursive;
-  font-size: 25.5cqw;
-  line-height: 0.7;
+  font-size: 3.35rem;
+  line-height: 0.8;
 }
 
-.hero-tag {
-  left: 15.4%;
-  top: 90.2%;
-  font-family: "Prata", "Times New Roman", serif;
-  font-size: 2.22cqw;
-  letter-spacing: 0.15em;
-  line-height: 1;
-  text-transform: uppercase;
+@media (min-width: 420px) {
+  .hero-name {
+    font-size: 3.25rem;
+  }
+
+  .hero-script {
+    font-size: 4.1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .hero-name {
+    font-size: 3.75rem;
+  }
+
+  .hero-script {
+    font-size: 4.75rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-name {
+    font-size: 10.5vw;
+    line-height: 0.82;
+  }
+
+  .hero-script {
+    font-size: 12vw;
+  }
 }
 
 .animate-veil {
@@ -475,7 +472,7 @@ html[data-a11y-readable="on"] {
   --font-display: ui-sans-serif, system-ui, sans-serif;
 }
 
-html[data-a11y-readable="on"] :is(.font-display, .italic, .hero-est, .hero-name, .hero-script, .hero-tag) {
+html[data-a11y-readable="on"] :is(.font-display, .italic, .hero-name, .hero-script) {
   font-family: var(--font-sans);
   font-style: normal;
   letter-spacing: 0.01em;
