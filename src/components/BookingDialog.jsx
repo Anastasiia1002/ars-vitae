@@ -574,7 +574,7 @@ function DateStep({ state, onChoose }) {
                   <span className="block text-muted-foreground">
                     {date.toLocaleDateString("uk-UA", { weekday: "short" })}
                   </span>
-                  <span className="font-display text-lg">{date.getDate()}</span>
+                  <span className="text-lg font-medium">{date.getDate()}</span>
                 </button>
               );
             })}

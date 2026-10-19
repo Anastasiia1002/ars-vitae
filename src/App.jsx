@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { Cursor, Footer, Header, MobileDock, ToastHost } from "./components/Chrome.jsx";
+import { ContactCorner, Cursor, Footer, Header, MobileDock, ToastHost } from "./components/Chrome.jsx";
 import Home from "./pages/Home.jsx";
 import Price from "./pages/Price.jsx";
 
@@ -24,6 +24,7 @@ export default function App() {
       </Routes>
       <Footer />
       <MobileDock />
+      <ContactCorner />
       <ToastHost />
     </div>
   );

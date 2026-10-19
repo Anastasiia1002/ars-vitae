@@ -126,7 +126,7 @@ export default function Price() {
                                   {duration}
                                 </span>
                               ) : null}
-                              <span className="font-display text-xl whitespace-nowrap tabular-nums">{formatPrice(service)}</span>
+                              <span className="text-xl font-medium whitespace-nowrap tabular-nums">{formatPrice(service)}</span>
                             </div>
                             <div className="flex items-center gap-2">
                             <button
@@ -228,7 +228,7 @@ function Calculator({ services, selected, onToggle }) {
           <div className="flex items-end justify-between gap-4">
             <div className="min-w-0">
               <p className="eyebrow">{total.partial ? "Орієнтовно" : "Разом"}</p>
-              <p className="mt-1 font-display text-3xl whitespace-nowrap tabular-nums">{formatQuote(total)}</p>
+              <p className="mt-1 text-3xl font-medium whitespace-nowrap tabular-nums">{formatQuote(total)}</p>
             </div>
             <BookingDialog
               open={open}
@@ -252,7 +252,7 @@ function Calculator({ services, selected, onToggle }) {
           <div className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-lg">
             <div className="min-w-0">
               <p className="text-xs text-muted-foreground">{serviceCountLabel(chosen.length)}</p>
-              <p className="font-display text-2xl whitespace-nowrap tabular-nums">{formatQuote(total)}</p>
+              <p className="text-2xl font-medium whitespace-nowrap tabular-nums">{formatQuote(total)}</p>
             </div>
             <button
               type="button"

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Instagram, MapPin, Menu, MessageCircle, Phone, Send, X } from "lucide-react";
-import { site } from "../data.js";
+import { images, site } from "../data.js";
 import { useScrollY } from "../hooks.js";
 import AccessibilityWidget from "./AccessibilityWidget.jsx";
 import BookingDialog from "./BookingDialog.jsx";
@@ -24,11 +24,12 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:px-10 lg:py-5">
-        <NavLink to="/" className="min-w-0 whitespace-nowrap">
-          <span className="font-display text-base tracking-[0.12em] sm:text-lg lg:text-xl lg:tracking-[0.16em]">
-            ARS VITAE
-          </span>
-          <span className="eyebrow ml-2 hidden lg:inline">sanctum</span>
+        <NavLink to="/" aria-label="ARS VITAE Sanctum" className="shrink-0">
+          <img
+            src={images.logo}
+            alt="ARS VITAE Sanctum — свідома косметологія, здоров'я та відновлення"
+            className="h-11 w-auto sm:h-12 lg:h-14"
+          />
         </NavLink>
         <nav className="glass-panel hidden items-center gap-1 rounded-full px-2 py-1.5 lg:flex">
           <NavItem to="/" label="Головна" end />
@@ -121,10 +122,10 @@ function NavItem({ to, label, end = false }) {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border px-5 py-12 pb-32 md:px-10 lg:pb-16">
+    <footer className="border-t border-border px-5 py-12 pb-32 md:px-10 lg:pr-24 lg:pb-16">
       <div className="mx-auto flex max-w-[1500px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div className="min-w-0">
-          <p className="font-display text-[2rem] leading-[0.95] sm:text-5xl lg:text-6xl">ARS VITAE SANCTUM</p>
+          <img src={images.logo} alt="ARS VITAE Sanctum" className="h-16 w-auto sm:h-20 lg:h-24" />
           <p className="mt-3 text-sm text-muted-foreground">
             {site.address} · Ліцензія МОЗ України
           </p>
@@ -152,6 +153,50 @@ const dock = [
   { href: site.phone, icon: Phone, label: "Дзвінок" },
   { href: site.maps, icon: MapPin, label: "Маршрут" },
 ];
+
+const corner = [
+  { href: site.telegram, icon: Send, label: "Telegram" },
+  { href: site.whatsapp, icon: MessageCircle, label: "WhatsApp" },
+  { href: site.instagram, icon: Instagram, label: "Instagram" },
+  { href: site.phone, icon: Phone, label: "Подзвонити", call: true },
+];
+
+export function ContactCorner() {
+  return (
+    <nav
+      aria-label="Месенджери та дзвінок"
+      className="fixed right-6 bottom-6 z-50 hidden flex-col items-end gap-2 md:flex"
+    >
+      {corner.map(({ href, icon: Icon, label, call }) => {
+        const external = !href.startsWith("tel:");
+        return (
+          <a
+            key={label}
+            href={href}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noreferrer" : undefined}
+            data-magnetic
+            aria-label={call ? `Подзвонити (${site.phoneLabel})` : label}
+            className="corner-link group relative"
+          >
+            <span className="corner-label pointer-events-none absolute top-1/2 right-full mr-2 hidden -translate-y-1/2 rounded-full bg-primary px-3 py-1.5 text-xs tracking-wide whitespace-nowrap text-primary-foreground shadow-[var(--shadow-soft)] transition-opacity duration-300 md:block">
+              {label}
+            </span>
+            <span
+              className={
+                call
+                  ? "flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[var(--shadow-lift)] transition-transform duration-500 group-hover:scale-105 md:h-12 md:w-12"
+                  : "glass-panel flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-transform duration-500 group-hover:scale-105 md:h-12 md:w-12"
+              }
+            >
+              <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+            </span>
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
 
 export function MobileDock() {
   return (

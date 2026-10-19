@@ -6,6 +6,7 @@ export const images = {
   texture: asset("images/texture.jpg"),
   before: asset("images/before.jpg"),
   after: asset("images/after.jpg"),
+  logo: asset("images/logo.png"),
 };
 
 export const site = {

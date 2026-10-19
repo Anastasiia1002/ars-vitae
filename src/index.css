@@ -1,8 +1,40 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Fixel Display";
+  src: url("./fonts/FixelDisplay-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fixel Display";
+  src: url("./fonts/FixelDisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fixel Display";
+  src: url("./fonts/FixelDisplay-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fixel Display";
+  src: url("./fonts/FixelDisplay-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", "Times New Roman", serif;
+  --font-sans: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -94,6 +126,7 @@ img {
 @layer components {
   .font-display {
     font-family: var(--font-display);
+    font-weight: 400;
   }
 
   .eyebrow {
@@ -173,6 +206,17 @@ img {
 
 .animate-rise {
   animation: rise-in 0.9s var(--ease-lux) both;
+}
+
+.hero-logo {
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 1024px) {
+  .hero-logo {
+    width: min(100%, 44rem);
+  }
 }
 
 .animate-veil {
@@ -265,6 +309,15 @@ img {
   border-color: var(--accent);
 }
 
+.corner-label {
+  opacity: 0;
+}
+
+.corner-link:hover .corner-label,
+.corner-link:focus-visible .corner-label {
+  opacity: 1;
+}
+
 .toast {
   position: fixed;
   right: 1rem;
@@ -276,7 +329,9 @@ img {
 
 @media (min-width: 768px) {
   .toast {
-    bottom: 1.25rem;
+    right: 5.75rem;
+    bottom: 1.5rem;
+    width: min(22rem, calc(100vw - 8rem));
   }
 }
 
@@ -403,7 +458,8 @@ html[data-a11y-contrast] a {
 }
 
 html[data-a11y-readable="on"] {
-  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-display: ui-sans-serif, system-ui, sans-serif;
 }
 
 html[data-a11y-readable="on"] :is(.font-display, .italic) {
