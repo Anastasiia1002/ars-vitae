@@ -74,7 +74,7 @@ function Hero({ scrollY }) {
       </div>
       <div className="mx-auto w-full max-w-[1500px]">
         <p className="eyebrow animate-rise">Чернівці · Licensed medical practice</p>
-        <h1 className="hero-title mt-5 max-w-full">
+        <h1 className="hero-title max-w-full">
           <span className="hero-name animate-rise block">ARS VITAE</span>
           <span className="hero-script animate-rise block" style={{ animationDelay: "0.12s" }}>
             Sanctum
