@@ -13,6 +13,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen overflow-x-clip">
+      <a href="#content" className="skip-link">
+        Перейти до вмісту
+      </a>
       <Cursor />
       <Header />
       <Routes>

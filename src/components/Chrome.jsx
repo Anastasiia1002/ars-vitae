@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Instagram, MapPin, Menu, MessageCircle, Phone, Send, X } from "lucide-react";
 import { images, site } from "../data.js";
 import { useScrollY } from "../hooks.js";
+import AccessibilityWidget from "./AccessibilityWidget.jsx";
 import BookingDialog from "./BookingDialog.jsx";
 
 export function Header() {
@@ -43,6 +44,7 @@ export function Header() {
           </a>
         </nav>
         <div className="flex shrink-0 items-center gap-2">
+          <AccessibilityWidget onOpen={() => setMenuOpen(false)} />
           <button
             type="button"
             className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card lg:hidden"
@@ -221,10 +223,28 @@ export function MobileDock() {
 }
 
 export function Cursor() {
+  const [revision, setRevision] = useState(0);
+
+  useEffect(() => {
+    const onChange = () => setRevision((value) => value + 1);
+    window.addEventListener("sanctum-a11y", onChange);
+    return () => window.removeEventListener("sanctum-a11y", onChange);
+  }, []);
+
   useEffect(() => {
     const coarse = window.matchMedia("(pointer: coarse)");
     const narrow = window.matchMedia("(max-width: 767px)");
-    if (coarse.matches || narrow.matches) return undefined;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const root = document.documentElement;
+    if (
+      coarse.matches ||
+      narrow.matches ||
+      reduce.matches ||
+      root.dataset.a11yCursor === "large" ||
+      root.dataset.a11yMotion === "off"
+    ) {
+      return undefined;
+    }
 
     const dot = document.createElement("div");
     const ring = document.createElement("div");
@@ -279,7 +299,7 @@ export function Cursor() {
       document.body.style.cursor = previousCursor;
       layer.remove();
     };
-  }, []);
+  }, [revision]);
 
   return null;
 }

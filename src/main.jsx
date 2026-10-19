@@ -2,7 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
+import { applyA11y, readA11y } from "./a11y.js";
 import "./index.css";
+
+applyA11y(readA11y());
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
 

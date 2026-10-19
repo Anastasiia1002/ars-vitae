@@ -17,6 +17,28 @@
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem("ars-vitae-a11y");
+          if (!raw) return;
+          var prefs = JSON.parse(raw);
+          var root = document.documentElement;
+          if (prefs.scale === 115 || prefs.scale === 130 || prefs.scale === 150) {
+            root.dataset.a11yScale = String(prefs.scale);
+          }
+          if (prefs.contrast === "light" || prefs.contrast === "dark" || prefs.contrast === "yellow") {
+            root.dataset.a11yContrast = prefs.contrast;
+          }
+          if (prefs.readable) root.dataset.a11yReadable = "on";
+          if (prefs.links) root.dataset.a11yLinks = "on";
+          if (prefs.spacing) root.dataset.a11ySpacing = "on";
+          if (prefs.motion) root.dataset.a11yMotion = "off";
+          if (prefs.cursor) root.dataset.a11yCursor = "large";
+          if (prefs.hideImages) root.dataset.a11yImages = "off";
+        } catch (error) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
