@@ -20,6 +20,18 @@ export function useReveal(deps = []) {
   }, deps);
 }
 
+export function useStillMotion() {
+  const [still, setStill] = useState(() => document.documentElement.dataset.a11yMotion === "off");
+
+  useEffect(() => {
+    const sync = () => setStill(document.documentElement.dataset.a11yMotion === "off");
+    window.addEventListener("sanctum-a11y", sync);
+    return () => window.removeEventListener("sanctum-a11y", sync);
+  }, []);
+
+  return still;
+}
+
 export function useScrollY() {
   const [y, setY] = useState(0);
   useEffect(() => {

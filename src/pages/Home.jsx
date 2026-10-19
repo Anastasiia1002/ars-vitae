@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
 import { images, licenseRows, site } from "../data.js";
 import { formatDuration, formatMoney, formatPrice, servicesInCategory } from "../altegio.js";
-import { useReveal, useScrollY } from "../hooks.js";
+import { useReveal, useScrollY, useStillMotion } from "../hooks.js";
 import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
@@ -36,7 +36,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main id="content" tabIndex={-1}>
       <Hero scrollY={scrollY} />
       <Approach />
       <Pillars />
@@ -49,6 +49,8 @@ export default function Home() {
 }
 
 function Hero({ scrollY }) {
+  const still = useStillMotion();
+
   return (
     <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-5 pt-28 pb-28 md:px-10 md:pt-32 lg:pb-16">
       <div className="absolute inset-0 -z-10">
@@ -58,10 +60,14 @@ function Hero({ scrollY }) {
           width={1600}
           height={1104}
           className="h-[118%] w-full object-cover"
-          style={{
-            transform: `translateY(${scrollY * -0.12}px) scale(1.06)`,
-            filter: "blur(2px) saturate(1.02)",
-          }}
+          style={
+            still
+              ? { filter: "blur(2px) saturate(1.02)" }
+              : {
+                  transform: `translateY(${scrollY * -0.12}px) scale(1.06)`,
+                  filter: "blur(2px) saturate(1.02)",
+                }
+          }
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-background/25" />
         <div className="animate-veil absolute inset-0" style={{ background: "var(--gradient-veil)" }} />

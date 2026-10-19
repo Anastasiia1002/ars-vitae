@@ -44,6 +44,8 @@ export default function Price() {
 
   return (
     <main
+      id="content"
+      tabIndex={-1}
       className={`mx-auto max-w-[1500px] px-5 pt-28 sm:pt-32 md:px-10 lg:pt-40 ${
         selected.length ? "pb-44 md:pb-36 lg:pb-16" : "pb-28 md:pb-16"
       }`}
