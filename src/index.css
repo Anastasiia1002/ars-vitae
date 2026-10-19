@@ -97,10 +97,16 @@ img {
   }
 
   .eyebrow {
-    letter-spacing: 0.28em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--muted-foreground);
     font-size: 0.6875rem;
+  }
+
+  @media (min-width: 640px) {
+    .eyebrow {
+      letter-spacing: 0.28em;
+    }
   }
 
   .bento-card {
@@ -132,6 +138,27 @@ img {
   .kinetic-line {
     display: block;
     overflow: hidden;
+  }
+
+  .chip-scroller {
+    display: flex;
+    max-width: 100%;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chip-scroller::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .chip-scroller.chip-wrap {
+    flex-wrap: wrap;
+    overflow: visible;
   }
 }
 
@@ -193,15 +220,49 @@ img {
   inset: 0;
   z-index: 80;
   display: grid;
-  place-items: center;
-  padding: 1.25rem;
-  background: color-mix(in oklab, black 72%, transparent);
+  align-items: end;
+  justify-items: center;
+  padding: 0;
+  background: color-mix(in oklab, var(--graphite) 28%, transparent);
+}
+
+@media (min-width: 640px) {
+  .modal-overlay {
+    align-items: center;
+    padding: 1.25rem;
+  }
 }
 
 .modal-panel {
   position: relative;
-  width: min(100%, 32rem);
+  width: 100%;
+  max-height: min(92svh, 100%);
+  overflow: auto;
+  background: var(--card);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   animation: rise-in 0.45s var(--ease-lux) both;
+}
+
+@media (min-width: 640px) {
+  .modal-panel {
+    width: min(100%, 32rem);
+    max-height: calc(100svh - 2.5rem);
+  }
+}
+
+.field-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  padding: 0.5rem 0;
+  outline: none;
+  transition: border-color 0.4s var(--ease-lux);
+}
+
+.field-input:focus {
+  border-color: var(--accent);
 }
 
 .corner-label {

@@ -12,12 +12,12 @@ export const images = {
 export const site = {
   telegram: "https://t.me/alina_naichuk",
   instagram: "https://instagram.com/ars.vitae.sanctum",
-  whatsapp: "https://wa.me/380500000000",
-  phone: "tel:+380500000000",
-  phoneLabel: "+380 50 000 00 00",
+  whatsapp: "https://wa.me/380501398350",
+  phone: "tel:+380501398350",
+  phoneLabel: "+380 50 139-83-50",
   city: "Чернівці",
-  address: "м. Чернівці, вул. Головна 1",
-  maps: "https://maps.google.com/?q=Чернівці+вул.+Головна+1",
+  address: "м. Чернівці, вулиця Героїв Майдану, 55",
+  maps: "https://maps.google.com/?q=48.272942,25.9292636",
 };
 
 export const categoryLabels = {
@@ -233,21 +233,6 @@ export const pillars = [
     subtitle: "Авторські доглядові та ін'єкційні протоколи",
     focus: "Природна естетика без ефекту маски",
     category: "aesthetics",
-  },
-];
-
-export const quotes = [
-  {
-    q: "Вперше косметолог почав з аналізів, а не з процедур. За три місяці зникли набряки, з якими я жила роками.",
-    a: "Олена, 38",
-  },
-  {
-    q: "Краніо-сакральна терапія повернула мені сон. Це не «розслаблюючий масаж», це інший рівень роботи.",
-    a: "Марія, 44",
-  },
-  {
-    q: "Ендоліфт дав саме той овал, який я хотіла — без відчуття, що я щось «зробила».",
-    a: "Ірина, 51",
   },
 ];
 

@@ -1,63 +1,103 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import { Instagram, MapPin, MessageCircle, Phone, Send } from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
+import { Instagram, MapPin, Menu, MessageCircle, Phone, Send, X } from "lucide-react";
 import { images, site } from "../data.js";
+import { useScrollY } from "../hooks.js";
 import BookingDialog from "./BookingDialog.jsx";
 
 export function Header() {
-  const [solid, setSolid] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+  const scrollY = useScrollY();
 
   useEffect(() => {
-    const onScroll = () => {
-      const next = window.scrollY > 12;
-      setSolid((current) => (current === next ? current : next));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    setMenuOpen(false);
+  }, [pathname]);
+
+  const solid = menuOpen || scrollY > 8;
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter] duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 max-lg:bg-background/90 max-lg:backdrop-blur-md ${
         solid ? "bg-background/90 backdrop-blur-md" : ""
       }`}
     >
-      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-4 py-4 sm:px-5 md:px-10 md:py-6">
-        <NavLink to="/" data-magnetic aria-label="ARS VITAE Sanctum" className="shrink-0">
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:px-10 lg:py-5">
+        <NavLink to="/" aria-label="ARS VITAE Sanctum" className="shrink-0">
           <img
             src={images.logo}
             alt="ARS VITAE Sanctum — свідома косметологія, здоров'я та відновлення"
-            className="h-12 w-auto sm:h-14 md:h-16"
+            className="h-11 w-auto sm:h-12 lg:h-14"
           />
         </NavLink>
-        <nav className="glass-panel hidden items-center gap-1 rounded-full px-2 py-1.5 md:flex">
+        <nav className="glass-panel hidden items-center gap-1 rounded-full px-2 py-1.5 lg:flex">
           <NavItem to="/" label="Головна" end />
           <NavItem to="/price" label="Прайс-лист" />
           <a
             href={site.instagram}
             target="_blank"
             rel="noreferrer"
-            data-magnetic
             className="rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             Instagram
           </a>
         </nav>
-        <BookingDialog
-          trigger={({ onClick }) => (
-            <button
-              type="button"
-              onClick={onClick}
-              data-magnetic
-              className="shrink-0 rounded-full bg-primary px-4 py-2.5 text-[11px] font-medium tracking-[0.12em] text-primary-foreground uppercase transition-transform duration-500 hover:scale-[1.04] sm:px-5 sm:text-xs"
-            >
-              Запис
-            </button>
-          )}
-        />
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card lg:hidden"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Закрити меню" : "Відкрити меню"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+          <BookingDialog
+            trigger={({ onClick }) => (
+              <button
+                type="button"
+                onClick={onClick}
+                className="shrink-0 rounded-full bg-primary px-4 py-2.5 text-[11px] font-medium tracking-[0.12em] text-primary-foreground uppercase sm:px-5 sm:text-xs"
+              >
+                Запис
+              </button>
+            )}
+          />
+        </div>
       </div>
+      {menuOpen ? (
+        <nav className="border-t border-border px-4 py-3 lg:hidden">
+          <div className="mx-auto flex max-w-[1500px] flex-col">
+            <MobileLink to="/" end>
+              Головна
+            </MobileLink>
+            <MobileLink to="/price">Прайс-лист</MobileLink>
+            <a
+              href={site.instagram}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-2xl px-3 py-3 text-base"
+            >
+              Instagram
+            </a>
+          </div>
+        </nav>
+      ) : null}
     </header>
+  );
+}
+
+function MobileLink({ to, end = false, children }) {
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      className={({ isActive }) =>
+        `rounded-2xl px-3 py-3 text-base ${isActive ? "bg-secondary text-foreground" : "text-foreground"}`
+      }
+    >
+      {children}
+    </NavLink>
   );
 }
 
@@ -80,14 +120,10 @@ function NavItem({ to, label, end = false }) {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border px-5 py-12 pb-32 md:py-12 md:pr-24 md:pb-16 md:pl-10">
+    <footer className="border-t border-border px-5 py-12 pb-32 md:px-10 lg:pr-24 lg:pb-16">
       <div className="mx-auto flex max-w-[1500px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
-        <div>
-          <img
-            src={images.logo}
-            alt="ARS VITAE Sanctum"
-            className="h-20 w-auto md:h-28"
-          />
+        <div className="min-w-0">
+          <img src={images.logo} alt="ARS VITAE Sanctum" className="h-16 w-auto sm:h-20 lg:h-24" />
           <p className="mt-3 text-sm text-muted-foreground">
             {site.address} · Ліцензія МОЗ України
           </p>
@@ -162,7 +198,7 @@ export function ContactCorner() {
 
 export function MobileDock() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 px-3 pb-3 md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden">
       <nav className="glass-panel flex items-center justify-between rounded-3xl px-1 py-2">
         {dock.map(({ href, icon: Icon, label }) => (
           <a
@@ -174,7 +210,7 @@ export function MobileDock() {
             className="flex min-w-0 flex-1 flex-col items-center gap-1 rounded-2xl px-1 py-1.5 transition-colors active:bg-secondary"
           >
             <Icon className="h-[18px] w-[18px] text-foreground" strokeWidth={1.4} />
-            <span className="max-w-full truncate text-[10px] tracking-wide text-muted-foreground">
+            <span className="max-w-full text-[10px] leading-tight text-muted-foreground">
               {label}
             </span>
           </a>

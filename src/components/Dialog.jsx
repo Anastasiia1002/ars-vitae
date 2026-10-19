@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
 export default function Dialog({
@@ -34,14 +35,14 @@ export default function Dialog({
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onMouseDown={onClose}>
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`modal-panel glass-panel rounded-3xl p-6 sm:p-8 ${className}`}
+        className={`modal-panel glass-panel rounded-t-3xl rounded-b-none p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:rounded-3xl sm:p-8 ${className}`}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <button
@@ -60,6 +61,7 @@ export default function Dialog({
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
