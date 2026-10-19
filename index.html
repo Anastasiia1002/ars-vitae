@@ -27,9 +27,7 @@
           if (prefs.scale === 115 || prefs.scale === 130 || prefs.scale === 150) {
             root.dataset.a11yScale = String(prefs.scale);
           }
-          if (prefs.contrast === "light" || prefs.contrast === "dark" || prefs.contrast === "yellow") {
-            root.dataset.a11yContrast = prefs.contrast;
-          }
+          delete root.dataset.a11yContrast;
           if (prefs.readable) root.dataset.a11yReadable = "on";
           if (prefs.links) root.dataset.a11yLinks = "on";
           if (prefs.spacing) root.dataset.a11ySpacing = "on";
