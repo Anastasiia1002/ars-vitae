@@ -32,26 +32,9 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Snell Roundhand";
-  src: local("Snell Roundhand"), local("Snell Roundhand Regular"), local("SnellRoundhand");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Snell Roundhand";
-  src: local("Snell Roundhand"), local("Snell Roundhand Regular"), local("SnellRoundhand");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
 @theme inline {
   --font-sans: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
-  --font-wordmark: "Snell Roundhand", "Fixel Display", ui-sans-serif, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -223,6 +206,17 @@ img {
 
 .animate-rise {
   animation: rise-in 0.9s var(--ease-lux) both;
+}
+
+.hero-logo {
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 1024px) {
+  .hero-logo {
+    width: min(100%, 44rem);
+  }
 }
 
 .animate-veil {
