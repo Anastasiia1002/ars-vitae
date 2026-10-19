@@ -32,6 +32,32 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Prata";
+  src: url("./fonts/Prata-Latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Prata";
+  src: url("./fonts/Prata-Cyrillic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: "Italianno";
+  src: url("./fonts/Italianno-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --font-sans: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
@@ -208,15 +234,64 @@ img {
   animation: rise-in 0.9s var(--ease-lux) both;
 }
 
-.hero-logo {
+.hero-lockup {
+  position: relative;
+  display: block;
   width: 100%;
-  height: auto;
+  max-width: 44rem;
+  aspect-ratio: 682 / 187;
+  margin: 0;
+  container-type: inline-size;
+  font-weight: 400;
+  color: var(--foreground);
 }
 
-@media (min-width: 1024px) {
-  .hero-logo {
-    width: min(100%, 44rem);
-  }
+.hero-est,
+.hero-name,
+.hero-script,
+.hero-tag {
+  position: absolute;
+  display: block;
+  margin: 0;
+  white-space: nowrap;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.hero-est {
+  left: 11.6%;
+  top: 0.6%;
+  font-family: "Prata", "Times New Roman", serif;
+  font-size: 2.15cqw;
+  letter-spacing: 0.18em;
+  line-height: 1;
+}
+
+.hero-name {
+  left: 26%;
+  top: 0;
+  font-family: "Prata", "Times New Roman", serif;
+  font-size: 13.4cqw;
+  letter-spacing: 0.012em;
+  line-height: 0.72;
+}
+
+.hero-script {
+  left: -1%;
+  top: 22%;
+  font-family: "Italianno", "Snell Roundhand", cursive;
+  font-size: 25.5cqw;
+  line-height: 0.7;
+}
+
+.hero-tag {
+  left: 15.4%;
+  top: 90.2%;
+  font-family: "Prata", "Times New Roman", serif;
+  font-size: 2.22cqw;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .animate-veil {
@@ -400,7 +475,7 @@ html[data-a11y-readable="on"] {
   --font-display: ui-sans-serif, system-ui, sans-serif;
 }
 
-html[data-a11y-readable="on"] :is(.font-display, .italic) {
+html[data-a11y-readable="on"] :is(.font-display, .italic, .hero-est, .hero-name, .hero-script, .hero-tag) {
   font-family: var(--font-sans);
   font-style: normal;
   letter-spacing: 0.01em;
