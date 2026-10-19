@@ -50,7 +50,8 @@
 
 @theme inline {
   --font-sans: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Snell Roundhand", "Fixel Display", ui-sans-serif, sans-serif;
+  --font-display: "Fixel Display", ui-sans-serif, system-ui, sans-serif;
+  --font-wordmark: "Snell Roundhand", "Fixel Display", ui-sans-serif, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
