@@ -4,10 +4,10 @@ import { Accessibility, RotateCcw, X } from "lucide-react";
 import { A11Y_STORAGE_KEY, applyA11y, defaultA11y, readA11y, writeA11y } from "../a11y.js";
 
 const SCALES = [
-  { value: 100, label: "Звичайний", mark: 15 },
-  { value: 115, label: "Середній", mark: 18 },
-  { value: 130, label: "Великий", mark: 22 },
-  { value: 150, label: "Дуже великий", mark: 26 },
+  { value: 100, label: "Звичайний", mark: 14 },
+  { value: 115, label: "Середній", mark: 20 },
+  { value: 130, label: "Великий", mark: 28 },
+  { value: 150, label: "Дуже великий", mark: 36 },
 ];
 
 const CONTRASTS = [
@@ -33,6 +33,8 @@ export default function AccessibilityWidget({ onOpen }) {
   const rootRef = useRef(null);
   const triggerRef = useRef(null);
   const panelRef = useRef(null);
+  const prefsRef = useRef(prefs);
+  prefsRef.current = prefs;
   const panelId = useId();
   const titleId = useId();
 
@@ -67,13 +69,15 @@ export default function AccessibilityWidget({ onOpen }) {
   }, [open]);
 
   const commit = (patch, announcement) => {
-    const next = writeA11y({ ...prefs, ...patch });
+    const next = writeA11y({ ...prefsRef.current, ...patch });
+    prefsRef.current = next;
     setPrefs(next);
     setMessage(announcement);
   };
 
   const reset = () => {
     const next = writeA11y(defaultA11y);
+    prefsRef.current = next;
     setPrefs(next);
     setMessage("Налаштування доступності скинуто");
   };
@@ -89,7 +93,7 @@ export default function AccessibilityWidget({ onOpen }) {
           role="dialog"
           aria-labelledby={titleId}
           tabIndex={-1}
-          className="a11y-panel fixed top-[4.75rem] right-3 z-[70] max-h-[min(34rem,calc(100svh-6rem))] w-[min(22.5rem,calc(100vw-1.5rem))] overflow-y-auto rounded-3xl border border-border bg-card p-4 text-foreground shadow-[var(--shadow-lift)] outline-none sm:p-5 lg:top-[5.5rem] lg:right-10"
+          className="a11y-panel fixed top-[4.75rem] right-3 z-[70] max-h-[calc(100svh-10.5rem)] w-[min(22.5rem,calc(100vw-1.5rem))] overflow-y-auto rounded-3xl border border-border bg-card p-4 text-foreground shadow-[var(--shadow-lift)] outline-none sm:p-5 md:max-h-[calc(100svh-7rem)] lg:top-[5.5rem] lg:right-10"
         >
             <div className="flex items-start justify-between gap-3">
               <div>
