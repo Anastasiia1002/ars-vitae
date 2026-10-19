@@ -56,7 +56,7 @@ export default function Price() {
         <span className="block text-accent italic">умови</span>
       </h1>
       <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground">
-        Послуги і ціни підвантажуються з Altegio. Запис одразу займає вільне вікно фахівця.
+        Послуги і ціни актуальні. Запис одразу займає вільне вікно фахівця.
       </p>
 
       <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_380px]">
@@ -92,7 +92,7 @@ export default function Price() {
           </div>
 
           {catalog.status === "loading" ? (
-            <p className="py-16 text-sm text-muted-foreground">Завантажуємо послуги з Altegio…</p>
+            <p className="py-16 text-sm text-muted-foreground">Завантажуємо послуги…</p>
           ) : null}
           {catalog.status === "error" ? (
             <p className="py-16 text-sm text-muted-foreground">

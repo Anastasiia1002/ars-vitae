@@ -307,7 +307,7 @@ function BookingForm({ presetServiceIds, presetStaffId, presetStaffName, onClose
       title={success ? "Ви записані" : "Онлайн-запис"}
       description={
         success
-          ? "Візит з'явився в розкладі Altegio."
+          ? "Візит з'явився в розкладі фахівця."
           : serviceTitle || "Оберіть послугу, фахівця і вільне вікно."
       }
     >

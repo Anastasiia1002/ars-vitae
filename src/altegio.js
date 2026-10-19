@@ -37,7 +37,7 @@ function messageFrom(payload) {
   const meta = payload?.meta;
   const fieldError = meta?.errors && Object.values(meta.errors).flat().find(Boolean);
   const raw = String(fieldError || (meta && !Array.isArray(meta) ? meta.message : "") || "");
-  if (/email/i.test(raw) && /required|not passed/i.test(raw)) return "Вкажіть email — Altegio очікує це поле.";
+  if (/email/i.test(raw) && /required|not passed/i.test(raw)) return "Вкажіть email.";
   if (/phone/i.test(raw)) return "Перевірте номер телефону. Потрібен формат +380.";
   if (/past/i.test(raw)) return "Цей час уже минув. Оберіть інше вікно.";
   if (/taken|unavailable|no available/i.test(raw)) return "Цей час щойно зайняли. Оберіть інше вікно.";
@@ -60,7 +60,7 @@ async function request(path, { method = "GET", body, fallback } = {}) {
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch {
-    throw new Error("Немає з'єднання з Altegio. Перевірте інтернет і спробуйте ще раз.");
+    throw new Error("Немає з'єднання. Перевірте інтернет і спробуйте ще раз.");
   }
 
   let payload = null;
@@ -72,7 +72,7 @@ async function request(path, { method = "GET", body, fallback } = {}) {
 
   if (!response.ok || payload?.success === false) {
     const error = new Error(
-      messageFrom(payload) || fallback || "Не вдалося отримати дані з Altegio.",
+      messageFrom(payload) || fallback || "Не вдалося отримати дані. Спробуйте ще раз.",
     );
     error.status = response.status;
     error.payload = payload;
