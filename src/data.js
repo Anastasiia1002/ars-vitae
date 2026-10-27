@@ -240,6 +240,10 @@ export const procedureArticles = [
   {
     id: "consultations",
     title: "Консультації спеціалістів",
+    image: asset("images/procedures/consultations.jpg"),
+    imageAlt: "Кабінет консультації: біла кушетка біля панорамного вікна",
+    imageWidth: 1800,
+    imageHeight: 1201,
     categoryAliases: ["консультації"],
     exactCategory: true,
     lead:
@@ -256,6 +260,10 @@ export const procedureArticles = [
   {
     id: "dmk",
     title: "Протоколи DMK",
+    image: asset("images/procedures/dmk.jpg"),
+    imageAlt: "Професійні ензимні маски DMK",
+    imageWidth: 1199,
+    imageHeight: 1800,
     categoryAliases: ["протоколи дмк", "протоколи dmk"],
     lead:
       "Професійні космецевтичні протоколи DMK — це комплексний підхід до догляду та корекції стану шкіри, спрямований на відновлення її функціонального стану та підтримку природних процесів.",
@@ -278,6 +286,10 @@ export const procedureArticles = [
   {
     id: "care",
     title: "Естетична доглядова косметологія",
+    image: asset("images/procedures/care.jpg"),
+    imageAlt: "Полиці з професійною доглядовою косметикою",
+    imageWidth: 1199,
+    imageHeight: 1800,
     categoryAliases: ["естетична доглядова косметологія"],
     exactCategory: true,
     lead:
@@ -301,6 +313,10 @@ export const procedureArticles = [
   {
     id: "injectables",
     title: "Ін'єкційна естетична косметологія",
+    image: asset("images/procedures/injectables.jpg"),
+    imageAlt: "Кабінет ін'єкційної косметології з кушеткою та дзеркалом",
+    imageWidth: 1800,
+    imageHeight: 1199,
     categoryAliases: ["ін'єкційна естетична косметологія"],
     exactCategory: true,
     lead:
@@ -324,6 +340,10 @@ export const procedureArticles = [
   {
     id: "face-massage",
     title: "Масаж обличчя з міоліфтинговим ефектом",
+    image: asset("images/procedures/face-massage.jpg"),
+    imageAlt: "Засіб для догляду за шкірою обличчя",
+    imageWidth: 1200,
+    imageHeight: 1800,
     categoryAliases: ["масаж обличчя"],
     exactCategory: true,
     lead:
@@ -347,6 +367,10 @@ export const procedureArticles = [
   {
     id: "oncoderm",
     title: "Дерматоонкологія",
+    image: asset("images/procedures/oncoderm.jpg"),
+    imageAlt: "Шкіра шиї та зони декольте крупним планом",
+    imageWidth: 1800,
+    imageHeight: 1192,
     categoryAliases: ["дерматоонкологія"],
     exactCategory: true,
     lead:
@@ -369,6 +393,10 @@ export const procedureArticles = [
   {
     id: "endosphere",
     title: "Ендосфера",
+    image: asset("images/procedures/endosphere.jpg"),
+    imageAlt: "Контур тіла для апаратної процедури",
+    imageWidth: 1200,
+    imageHeight: 1800,
     categoryAliases: ["ендосфера"],
     exactCategory: true,
     lead:
@@ -392,6 +420,10 @@ export const procedureArticles = [
   {
     id: "body-massage",
     title: "Ручний масаж тіла",
+    image: asset("images/procedures/body-massage.jpg"),
+    imageAlt: "Ручний масаж передпліччя",
+    imageWidth: 1200,
+    imageHeight: 1800,
     categoryAliases: ["масаж"],
     exactCategory: true,
     lead:
@@ -425,6 +457,10 @@ export const procedureArticles = [
   {
     id: "endocrinology",
     title: "Ендокринологія",
+    image: asset("images/procedures/endocrinology.jpg"),
+    imageAlt: "Зона шиї та ключиці",
+    imageWidth: 1200,
+    imageHeight: 1800,
     categoryAliases: ["ендокринологія"],
     exactCategory: true,
     lead:
@@ -458,6 +494,10 @@ export const procedureArticles = [
   {
     id: "ems",
     title: "EMS-тренування",
+    image: asset("images/procedures/ems.jpg"),
+    imageAlt: "Тренування тіла",
+    imageWidth: 1200,
+    imageHeight: 1800,
     categoryAliases: ["ems тренування"],
     exactCategory: true,
     lead:
