@@ -233,6 +233,15 @@ function ProcedureArticle({ article, index, categories }) {
       <div className="md:col-span-4">
         <p className="eyebrow">{String(index + 1).padStart(2, "0")}</p>
         <h3 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{article.title}</h3>
+        <img
+          src={article.image}
+          alt={article.imageAlt}
+          width={article.imageWidth}
+          height={article.imageHeight}
+          loading="lazy"
+          decoding="async"
+          className="mt-5 w-full rounded-[calc(var(--radius)+8px)] border border-border"
+        />
         <Link
           to={href}
           data-magnetic
