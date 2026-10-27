@@ -236,9 +236,9 @@ function ProcedureArticle({ article, index, categories }) {
         <Link
           to={href}
           data-magnetic
-          className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-primary px-4 py-2.5 text-left text-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+          className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-primary px-4 py-2.5 text-left text-sm leading-snug transition-colors hover:bg-primary hover:text-primary-foreground"
         >
-          <span>{category ? `Ціни · ${category.title}` : "Дивитися в прайсі"}</span>
+          <span className="min-w-0">{category ? `Ціни · ${category.title}` : "Дивитися в прайсі"}</span>
           <ArrowUpRight className="h-4 w-4 shrink-0" />
         </Link>
       </div>
