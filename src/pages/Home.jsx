@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
 import { images, licenseRows, procedureArticles, site } from "../data.js";
@@ -189,7 +189,43 @@ function Approach() {
 
 function Pillars() {
   const catalog = useCatalog();
+  const [active, setActive] = useState(0);
+  const scrollerRef = useRef(null);
+  const focusTab = useRef(false);
+  const index = Math.min(active, procedureArticles.length - 1);
+  const article = procedureArticles[index];
   useReveal([catalog.status]);
+
+  useEffect(() => {
+    const root = scrollerRef.current;
+    const button = root?.querySelector("[aria-selected='true']");
+    if (!root || !button) return;
+    if (root.scrollWidth > root.clientWidth + 8) {
+      const left = button.offsetLeft - (root.clientWidth - button.offsetWidth) / 2;
+      root.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+    }
+    if (focusTab.current) {
+      focusTab.current = false;
+      button.focus();
+    }
+  }, [index]);
+
+  const selectTab = (next, { focus = false } = {}) => {
+    focusTab.current = focus;
+    setActive(next);
+  };
+
+  const onTabsKeyDown = (event) => {
+    const last = procedureArticles.length - 1;
+    let next = null;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") next = index === last ? 0 : index + 1;
+    if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = index === 0 ? last : index - 1;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = last;
+    if (next == null || next === index) return;
+    event.preventDefault();
+    selectTab(next, { focus: true });
+  };
 
   return (
     <section id="pillars" className="border-y border-border bg-secondary/40 py-16 sm:py-24 md:py-32">
@@ -207,16 +243,38 @@ function Pillars() {
             Повний прайс <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="mt-10 divide-y divide-border border-t border-border sm:mt-14">
-          {procedureArticles.map((article, index) => (
-            <ProcedureArticle
-              key={article.id}
-              article={article}
-              index={index}
-              categories={catalog.categories}
-            />
-          ))}
+        <div
+          ref={scrollerRef}
+          role="tablist"
+          aria-label="Напрями процедур"
+          onKeyDown={onTabsKeyDown}
+          className="chip-scroller chip-wrap reveal mt-8 pb-1 sm:mt-10"
+        >
+          {procedureArticles.map((item, itemIndex) => {
+            const selected = itemIndex === index;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                id={`procedure-tab-${item.id}`}
+                aria-selected={selected}
+                aria-controls={`procedure-panel-${item.id}`}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => selectTab(itemIndex)}
+                className={`shrink-0 snap-start rounded-full border px-4 py-2.5 text-left text-sm transition-colors ${
+                  selected
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-card text-muted-foreground hover:border-accent hover:text-foreground"
+                }`}
+              >
+                <span className="mr-2 opacity-60">{String(itemIndex + 1).padStart(2, "0")}</span>
+                {item.title}
+              </button>
+            );
+          })}
         </div>
+        <ProcedureArticle article={article} index={index} categories={catalog.categories} />
       </div>
     </section>
   );
@@ -229,30 +287,26 @@ function ProcedureArticle({ article, index, categories }) {
   const href = category ? `/price?category=${category.id}` : "/price";
 
   return (
-    <article className="reveal grid gap-6 py-8 sm:py-10 md:grid-cols-12 md:gap-10 md:py-12">
-      <div className="md:col-span-4">
-        <p className="eyebrow">{String(index + 1).padStart(2, "0")}</p>
-        <h3 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{article.title}</h3>
+    <article
+      role="tabpanel"
+      id={`procedure-panel-${article.id}`}
+      aria-labelledby={`procedure-tab-${article.id}`}
+      className="mt-6 grid gap-6 sm:mt-8 md:grid-cols-12 md:gap-10"
+    >
+      <div className="md:col-span-5">
         <img
           src={article.image}
           alt={article.imageAlt}
           width={article.imageWidth}
           height={article.imageHeight}
-          loading="lazy"
           decoding="async"
-          className="mt-5 w-full rounded-[calc(var(--radius)+8px)] border border-border"
+          className="w-full rounded-[calc(var(--radius)+8px)] border border-border"
         />
-        <Link
-          to={href}
-          data-magnetic
-          className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-primary px-4 py-2.5 text-left text-sm leading-snug transition-colors hover:bg-primary hover:text-primary-foreground"
-        >
-          <span className="min-w-0">{category ? `Ціни · ${category.title}` : "Дивитися в прайсі"}</span>
-          <ArrowUpRight className="h-4 w-4 shrink-0" />
-        </Link>
       </div>
-      <div className="md:col-span-8">
-        <p className="text-sm leading-relaxed text-muted-foreground md:text-base">{article.lead}</p>
+      <div className="md:col-span-7">
+        <p className="eyebrow">{String(index + 1).padStart(2, "0")}</p>
+        <h3 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{article.title}</h3>
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">{article.lead}</p>
         {article.sections.map((section) => (
           <div key={section.label} className="mt-6">
             <p className="eyebrow">{section.label}</p>
@@ -278,6 +332,14 @@ function ProcedureArticle({ article, index, categories }) {
           </div>
         ))}
         <p className="mt-6 text-sm leading-relaxed md:text-base">{article.closing}</p>
+        <Link
+          to={href}
+          data-magnetic
+          className="mt-6 inline-flex max-w-full items-center gap-2 rounded-full border border-primary px-4 py-2.5 text-left text-sm leading-snug transition-colors hover:bg-primary hover:text-primary-foreground"
+        >
+          <span className="min-w-0">{category ? `Ціни · ${category.title}` : "Дивитися в прайсі"}</span>
+          <ArrowUpRight className="h-4 w-4 shrink-0" />
+        </Link>
       </div>
     </article>
   );
