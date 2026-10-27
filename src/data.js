@@ -20,6 +20,9 @@ export const site = {
   maps: "https://maps.google.com/?q=48.272942,25.9292636",
 };
 
+// Посилання YouTube, зокрема «доступ за посиланням». Порожній список ховає блок.
+export const videos = [];
+
 export const categoryLabels = {
   apparatus: "Апаратні",
   body: "Тілесні",

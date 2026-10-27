@@ -8,6 +8,7 @@ import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
 import Team from "../components/Team.jsx";
+import Videos from "../components/Videos.jsx";
 import { useCatalog, useCompany } from "../useAltegio.js";
 
 const approaches = [
@@ -43,6 +44,7 @@ export default function Home() {
       <Team />
       <PriceTeaser />
       <Proof />
+      <Videos />
       <Location />
     </main>
   );
