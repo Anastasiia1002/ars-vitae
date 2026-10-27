@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
-import { images, licenseRows, site } from "../data.js";
-import { formatDuration, formatMoney, formatPrice, servicesInCategory } from "../altegio.js";
+import { images, licenseRows, procedureArticles, site } from "../data.js";
+import { findPriceCategory } from "../altegio.js";
 import { useReveal, useScrollY, useStillMotion } from "../hooks.js";
 import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
@@ -189,23 +189,7 @@ function Approach() {
 
 function Pillars() {
   const catalog = useCatalog();
-  const [active, setActive] = useState(0);
-  const scrollerRef = useRef(null);
-  const categories = catalog.categories;
-  const index = categories.length ? Math.min(active, categories.length - 1) : 0;
-  const category = categories[index];
-  const items = category ? servicesInCategory(catalog.services, category) : [];
-  const preview = items.slice(0, 4);
-  const hiddenCount = Math.max(0, items.length - preview.length);
-  useReveal([catalog.status, index]);
-
-  useEffect(() => {
-    const root = scrollerRef.current;
-    const button = root?.querySelector("[data-active='true']");
-    if (!root || !button || root.scrollWidth <= root.clientWidth + 8) return;
-    const left = button.offsetLeft - (root.clientWidth - button.offsetWidth) / 2;
-    root.scrollTo({ left: Math.max(0, left) });
-  }, [index, categories.length]);
+  useReveal([catalog.status]);
 
   return (
     <section id="pillars" className="border-y border-border bg-secondary/40 py-16 sm:py-24 md:py-32">
@@ -223,137 +207,71 @@ function Pillars() {
             Повний прайс <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
-        {catalog.status === "loading" ? (
-          <p className="mt-10 text-sm text-muted-foreground">Завантажуємо актуальні напрями…</p>
-        ) : null}
-        {catalog.status === "error" ? (
-          <p className="mt-10 text-sm text-muted-foreground">
-            Не вдалося завантажити напрями. Повний список є в прайсі.
-          </p>
-        ) : null}
-        {category ? (
-          <>
-            <div ref={scrollerRef} className="chip-scroller chip-wrap reveal mt-8 pb-1 sm:mt-10">
-              {categories.map((item, itemIndex) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  data-active={itemIndex === index}
-                  onClick={() => setActive(itemIndex)}
-                  className={`shrink-0 snap-start rounded-full border px-4 py-2.5 text-left text-sm transition-colors ${
-                    itemIndex === index
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-card text-muted-foreground hover:border-accent hover:text-foreground"
-                  }`}
-                >
-                  <span className="mr-2 opacity-60">{String(itemIndex + 1).padStart(2, "0")}</span>
-                  {item.title}
-                </button>
-              ))}
-            </div>
-            <div className="mt-5 grid gap-4 lg:mt-6 lg:grid-cols-12 lg:gap-5">
-              <div className="reveal relative h-52 overflow-hidden rounded-[calc(var(--radius)+8px)] border border-border sm:h-64 lg:col-span-5 lg:h-auto lg:min-h-56">
-                <img
-                  src={index % 2 === 0 ? images.portrait : images.texture}
-                  alt=""
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-                <div
-                  className="absolute inset-x-0 bottom-0 p-5 sm:p-6"
-                  style={{ background: "linear-gradient(to top, var(--card), transparent)" }}
-                >
-                  <p className="eyebrow">{String(index + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-1 font-display text-3xl leading-tight sm:text-4xl">{category.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{categorySummary(items)}</p>
-                </div>
-              </div>
-              <div className="reveal bento-card flex flex-col lg:col-span-7">
-                {preview.length === 0 ? (
-                  <p className="px-5 py-6 text-sm text-muted-foreground">У цьому напрямі зараз немає послуг для запису.</p>
-                ) : (
-                  <ul className="flex flex-1 flex-col">
-                    {preview.map((service) => {
-                      const duration = formatDuration(service.duration);
-                      return (
-                        <li key={service.id} className="border-b border-border last:border-b-0">
-                          <div className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-                            <div className="min-w-0">
-                              <h4 className="font-display text-xl leading-snug">{service.title}</h4>
-                              {service.comment ? (
-                                <p className="mt-1 text-sm text-muted-foreground">{service.comment}</p>
-                              ) : null}
-                              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                                {duration ? (
-                                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1">
-                                    <Clock className="h-3 w-3" /> {duration}
-                                  </span>
-                                ) : null}
-                                <span className="rounded-full border border-border px-3 py-1 whitespace-nowrap">
-                                  {formatPrice(service)}
-                                </span>
-                              </div>
-                            </div>
-                            <BookingDialog
-                              serviceIds={[service.id]}
-                              trigger={({ onClick }) => (
-                                <button
-                                  type="button"
-                                  onClick={onClick}
-                                  className="min-h-11 w-full shrink-0 rounded-full border border-primary px-5 py-2.5 text-sm transition-colors hover:bg-primary hover:text-primary-foreground sm:w-auto"
-                                >
-                                  Записатися
-                                </button>
-                              )}
-                            />
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-                {hiddenCount > 0 ? (
-                  <Link
-                    to={`/price?category=${category.id}`}
-                    className="flex items-center justify-between gap-3 px-5 py-4 text-sm text-muted-foreground"
-                  >
-                    Ще {hiddenCount} у цьому напрямі
-                    <ArrowUpRight className="h-4 w-4" />
-                  </Link>
-                ) : null}
-              </div>
-            </div>
-          </>
-        ) : null}
+        <div className="mt-10 divide-y divide-border border-t border-border sm:mt-14">
+          {procedureArticles.map((article, index) => (
+            <ProcedureArticle
+              key={article.id}
+              article={article}
+              index={index}
+              categories={catalog.categories}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function categorySummary(items) {
-  const count = serviceCount(items.length);
-  const prices = items
-    .map((service) => {
-      const min = Number(service.priceMin) || 0;
-      const max = Number(service.priceMax) || 0;
-      if (min === 0 && max === 0) return null;
-      if (max === 0 || min === max) return min || max;
-      return Math.min(min, max);
-    })
-    .filter((value) => value != null);
-  if (!prices.length) return `${count} · ціна за запитом`;
-  const lowest = Math.min(...prices);
-  const highest = Math.max(...prices);
-  if (lowest === highest) return `${count} · ${formatMoney(lowest)} ₴`;
-  return `${count} · від ${formatMoney(lowest)} ₴`;
-}
+function ProcedureArticle({ article, index, categories }) {
+  const category = findPriceCategory(categories, article.categoryAliases, {
+    exact: article.exactCategory,
+  });
+  const href = category ? `/price?category=${category.id}` : "/price";
 
-function serviceCount(count) {
-  const mod10 = count % 10;
-  const mod100 = count % 100;
-  if (mod10 === 1 && mod100 !== 11) return `${count} послуга`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${count} послуги`;
-  return `${count} послуг`;
+  return (
+    <article className="reveal grid gap-6 py-8 sm:py-10 md:grid-cols-12 md:gap-10 md:py-12">
+      <div className="md:col-span-4">
+        <p className="eyebrow">{String(index + 1).padStart(2, "0")}</p>
+        <h3 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{article.title}</h3>
+        <Link
+          to={href}
+          data-magnetic
+          className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-primary px-4 py-2.5 text-left text-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+        >
+          <span>{category ? `Ціни · ${category.title}` : "Дивитися в прайсі"}</span>
+          <ArrowUpRight className="h-4 w-4 shrink-0" />
+        </Link>
+      </div>
+      <div className="md:col-span-8">
+        <p className="text-sm leading-relaxed text-muted-foreground md:text-base">{article.lead}</p>
+        {article.sections.map((section) => (
+          <div key={section.label} className="mt-6">
+            <p className="eyebrow">{section.label}</p>
+            <ul className="mt-3 space-y-2.5">
+              {section.items.map((item) => {
+                const split = item.split(" — ");
+                const titled = split.length > 1;
+                return (
+                  <li key={item} className="flex gap-3 text-sm leading-relaxed">
+                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                    {titled ? (
+                      <span>
+                        <span className="text-foreground">{split[0]}</span>
+                        <span className="text-muted-foreground"> — {split.slice(1).join(" — ")}</span>
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground">{item}</span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+        <p className="mt-6 text-sm leading-relaxed md:text-base">{article.closing}</p>
+      </div>
+    </article>
+  );
 }
 
 function PriceTeaser() {

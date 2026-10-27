@@ -151,7 +151,6 @@ export function loadCatalog() {
       fetchServiceDetails(),
     ]);
     const detailById = new Map((details || []).map((item) => [item.id, item]));
-    const knownIds = new Set((categories || []).map((item) => item.id));
     const services = (book?.services || [])
       .filter((service) => service.active)
       .map((service) => {
@@ -174,29 +173,56 @@ export function loadCatalog() {
 
     const used = new Set(services.map((service) => service.categoryId));
     const nextCategories = (categories || [])
-      .filter((category) => used.has(category.id))
+      .filter((category) => used.has(category.id) && !isHiddenCategory(category.title))
       .map((category) => ({
         id: category.id,
         title: category.title,
         weight: Number(category.weight) || 0,
       }));
-    const unknownIds = [...used].filter((id) => !knownIds.has(id));
-    if (unknownIds.length) {
-      nextCategories.push({
-        id: "other",
-        title: "Інші послуги",
-        weight: -1,
-        ids: unknownIds,
-      });
-    }
     nextCategories.sort((a, b) => b.weight - a.weight || a.title.localeCompare(b.title, "uk"));
-    return { services, categories: nextCategories };
+    const visibleIds = new Set(nextCategories.map((category) => category.id));
+    return {
+      services: services.filter((service) => visibleIds.has(service.categoryId)),
+      categories: nextCategories,
+    };
   });
+}
+
+const HIDDEN_CATEGORY_TITLES = new Set(["інші послуги", "швидкі процедури"]);
+
+export function foldTitle(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/['’ʼ`′]/g, "")
+    .replace(/[-–—]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isHiddenCategory(title) {
+  return HIDDEN_CATEGORY_TITLES.has(foldTitle(title));
+}
+
+export function findPriceCategory(categories, aliases, { exact = false } = {}) {
+  const folded = (categories || []).map((category) => ({
+    category,
+    name: foldTitle(category.title),
+  }));
+  const targets = (aliases || []).map((alias) => foldTitle(alias)).filter(Boolean);
+  for (const target of targets) {
+    const found = folded.find((item) => item.name === target);
+    if (found) return found.category;
+  }
+  if (exact) return null;
+  for (const target of targets) {
+    const found = folded.find((item) => item.name.includes(target));
+    if (found) return found.category;
+  }
+  return null;
 }
 
 export function servicesInCategory(services, category) {
   if (!category || category === "all") return services;
-  if (category.id === "other") return services.filter((service) => category.ids.includes(service.categoryId));
   return services.filter((service) => service.categoryId === category.id);
 }
 
