@@ -1,4 +1,16 @@
-export const siteOrigin = "https://anastasiia1002.github.io/ars-vitae";
+const GITHUB_ORIGIN = "https://anastasiia1002.github.io/ars-vitae";
+const VERCEL_ORIGIN = "https://ars-vitae.vercel.app";
+
+function resolveOrigin() {
+  if (typeof __SITE_ORIGIN__ !== "undefined") return __SITE_ORIGIN__;
+  if (typeof process !== "undefined" && process.env) {
+    if (process.env.VITE_SITE_ORIGIN) return process.env.VITE_SITE_ORIGIN.replace(/\/$/, "");
+    if (process.env.GITHUB_PAGES === "true") return GITHUB_ORIGIN;
+  }
+  return VERCEL_ORIGIN;
+}
+
+export const siteOrigin = resolveOrigin();
 
 const heroImage = `${siteOrigin}/images/hero.jpg`;
 
@@ -104,8 +116,10 @@ export function applySeo(html, page) {
   next = replaceMeta(next, "property", "og:title", page.title);
   next = replaceMeta(next, "property", "og:description", page.description);
   next = replaceMeta(next, "property", "og:url", url);
+  next = replaceMeta(next, "property", "og:image", `${siteOrigin}/images/hero.jpg`);
   next = replaceMeta(next, "name", "twitter:title", page.title);
   next = replaceMeta(next, "name", "twitter:description", page.description);
+  next = replaceMeta(next, "name", "twitter:image", `${siteOrigin}/images/hero.jpg`);
   if (!/<link rel="canonical" href="[^"]*"\s*\/?>/.test(next)) throw new Error("missing canonical");
   next = next.replace(/<link rel="canonical" href="[^"]*"\s*\/?>/, `<link rel="canonical" href="${url}" />`);
   const json = `<script type="application/ld+json" id="structured-data">${JSON.stringify(structuredData(page))}</script>`;

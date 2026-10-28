@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import { siteOrigin } from "./src/seo.js";
 
-const base = "/ars-vitae/";
+const githubPages = process.env.GITHUB_PAGES === "true";
+const base = githubPages ? "/ars-vitae/" : "/";
 
 function redirectBareBase() {
   const bare = base.replace(/\/$/, "");
@@ -24,7 +26,20 @@ function redirectBareBase() {
   };
 }
 
+function writeSeoPages() {
+  return {
+    name: "write-seo-pages",
+    apply: "build",
+    async closeBundle() {
+      await import("./scripts/write-seo-pages.mjs");
+    },
+  };
+}
+
 export default defineConfig({
   base,
-  plugins: [redirectBareBase(), react(), tailwindcss()],
+  define: {
+    __SITE_ORIGIN__: JSON.stringify(siteOrigin),
+  },
+  plugins: [githubPages ? redirectBareBase() : null, react(), tailwindcss(), writeSeoPages()].filter(Boolean),
 });

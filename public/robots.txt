@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://anastasiia1002.github.io/ars-vitae/sitemap.xml
+Sitemap: https://ars-vitae.vercel.app/sitemap.xml
