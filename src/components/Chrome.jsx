@@ -129,7 +129,7 @@ export function Footer() {
           <p className="mt-3 text-sm text-muted-foreground">
             {site.address}
             {" · "}
-            <a href={site.phone} className="underline underline-offset-4">
+            <a href={site.phone} className="underline underline-offset-4 whitespace-nowrap">
               {site.phoneLabel}
             </a>
             {" · Ліцензія МОЗ України"}

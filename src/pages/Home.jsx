@@ -431,7 +431,7 @@ function Location() {
           <p className="eyebrow">Локація</p>
           <h2 className="mt-3 font-display text-4xl sm:text-5xl md:text-7xl">{site.city}</h2>
           <p className="mt-4 text-sm text-muted-foreground">{site.address}</p>
-          <a href={site.phone} className="mt-2 inline-block text-sm underline underline-offset-4">
+          <a href={site.phone} className="mt-2 inline-block text-sm underline underline-offset-4 whitespace-nowrap">
             {site.phoneLabel}
           </a>
           <div className="mt-6 flex flex-wrap gap-2">
