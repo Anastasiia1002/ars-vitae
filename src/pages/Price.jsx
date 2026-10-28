@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Check, ChevronDown, Plus, Search, Sparkles } from "lucide-react";
 import { formatDuration, formatPrice, formatQuote, quoteTotal, servicesInCategory } from "../altegio.js";
+import { pages } from "../seo.js";
 import { useReveal } from "../hooks.js";
 import { useCatalog } from "../useAltegio.js";
 import BookingDialog from "../components/BookingDialog.jsx";
+import Seo from "../components/Seo.jsx";
 
 export default function Price() {
   const catalog = useCatalog();
@@ -17,10 +19,6 @@ export default function Price() {
   useEffect(() => {
     setFilter(params.get("category") || "all");
   }, [params]);
-
-  useEffect(() => {
-    document.title = "Інтерактивний прайс-лист — ARS VITAE SANCTUM, Чернівці";
-  }, []);
 
   const activeCategory = catalog.categories.find((category) => String(category.id) === String(filter));
 
@@ -50,6 +48,7 @@ export default function Price() {
         selected.length ? "pb-44 md:pb-36 lg:pb-16" : "pb-28 md:pb-16"
       }`}
     >
+      <Seo page={pages.price} />
       <p className="eyebrow">Прайс-лист · {new Date().getFullYear()}</p>
       <h1 className="mt-4 font-display text-[2.6rem] leading-[0.9] sm:text-6xl md:text-[7vw] md:leading-[0.86]">
         Прозорі

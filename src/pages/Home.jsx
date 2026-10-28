@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
 import { images, licenseRows, procedureArticles, site } from "../data.js";
+import { pages } from "../seo.js";
 import { findPriceCategory } from "../altegio.js";
 import { useReveal, useScrollY, useStillMotion } from "../hooks.js";
 import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
 import Team from "../components/Team.jsx";
+import Seo from "../components/Seo.jsx";
 import Videos from "../components/Videos.jsx";
 import { useCatalog, useCompany } from "../useAltegio.js";
 
@@ -32,12 +34,10 @@ const approaches = [
 export default function Home() {
   const scrollY = useScrollY();
   useReveal([]);
-  useEffect(() => {
-    document.title = "ARS VITAE SANCTUM — свідома косметологія у Чернівцях";
-  }, []);
 
   return (
     <main id="content" tabIndex={-1}>
+      <Seo page={pages.home} />
       <Hero scrollY={scrollY} />
       <Approach />
       <Pillars />
@@ -431,6 +431,9 @@ function Location() {
           <p className="eyebrow">Локація</p>
           <h2 className="mt-3 font-display text-4xl sm:text-5xl md:text-7xl">{site.city}</h2>
           <p className="mt-4 text-sm text-muted-foreground">{site.address}</p>
+          <a href={site.phone} className="mt-2 inline-block text-sm underline underline-offset-4">
+            {site.phoneLabel}
+          </a>
           <div className="mt-6 flex flex-wrap gap-2">
             <a
               href={site.maps}

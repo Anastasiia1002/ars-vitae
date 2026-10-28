@@ -127,7 +127,12 @@ export function Footer() {
         <div className="min-w-0">
           <img src={images.logo} alt="ARS VITAE Sanctum" className="h-16 w-auto sm:h-20 lg:h-24" />
           <p className="mt-3 text-sm text-muted-foreground">
-            {site.address} · Ліцензія МОЗ України
+            {site.address}
+            {" · "}
+            <a href={site.phone} className="underline underline-offset-4">
+              {site.phoneLabel}
+            </a>
+            {" · Ліцензія МОЗ України"}
           </p>
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">

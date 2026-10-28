@@ -15,7 +15,6 @@ const items = videos
 export default function Videos() {
   const [playing, setPlaying] = useState(null);
   useReveal([items.length]);
-  if (!items.length) return null;
 
   const layout =
     items.length === 1
@@ -25,7 +24,7 @@ export default function Videos() {
         : "mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3";
 
   return (
-    <section className="border-t border-border py-16 sm:py-24 md:py-32">
+    <section id="videos" className="border-t border-border py-16 sm:py-24 md:py-32">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="reveal">
           <p className="eyebrow">Відео</p>
@@ -33,20 +32,24 @@ export default function Videos() {
             Записи процедур
           </h2>
           <p className="mt-4 max-w-lg text-sm text-muted-foreground">
-            Натисніть на кадр, щоб відтворити ролик прямо на сторінці.
+            {items.length
+              ? "Натисніть на кадр, щоб відтворити ролик прямо на сторінці."
+              : "Короткі записи з кабінету відкриваються прямо на цій сторінці."}
           </p>
         </div>
-        <ul className={layout}>
-          {items.map((video) => (
-            <li key={`${video.id}-${video.index}`} className="reveal">
-              <VideoCard
-                video={video}
-                active={playing === video.index}
-                onPlay={() => setPlaying(video.index)}
-              />
-            </li>
-          ))}
-        </ul>
+        {items.length ? (
+          <ul className={layout}>
+            {items.map((video) => (
+              <li key={`${video.id}-${video.index}`} className="reveal">
+                <VideoCard
+                  video={video}
+                  active={playing === video.index}
+                  onPlay={() => setPlaying(video.index)}
+                />
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </section>
   );

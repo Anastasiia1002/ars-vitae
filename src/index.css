@@ -226,7 +226,8 @@ img {
   border-color: color-mix(in oklab, var(--sage) 45%, transparent);
 }
 
-#pillars {
+#pillars,
+#videos {
   scroll-margin-top: 4.5rem;
 }
 
