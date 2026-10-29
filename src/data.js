@@ -46,7 +46,32 @@ const lipCases = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((number) =>
   };
 });
 
-export const resultCases = [...endoliftCases, ...dmkCases, ...acneCases, ...lipCases];
+// Розкладаємо фото рівномірно, зберігаючи порядок всередині кожної процедури.
+function mixInOrder(groups) {
+  const total = groups.reduce((sum, group) => sum + group.length, 0);
+  const cursor = groups.map(() => 0);
+  const placed = groups.map(() => 0);
+  const mixed = [];
+  while (mixed.length < total) {
+    let next = -1;
+    let nextScore = Infinity;
+    groups.forEach((group, index) => {
+      if (cursor[index] >= group.length) return;
+      const ideal = ((mixed.length + 1) * group.length) / total;
+      const score = placed[index] - ideal;
+      if (score < nextScore) {
+        nextScore = score;
+        next = index;
+      }
+    });
+    mixed.push(groups[next][cursor[next]]);
+    cursor[next] += 1;
+    placed[next] += 1;
+  }
+  return mixed;
+}
+
+export const resultCases = mixInOrder([endoliftCases, dmkCases, acneCases, lipCases]);
 
 export const site = {
   telegram: "https://t.me/alina_naichuk",
