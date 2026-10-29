@@ -27,6 +27,12 @@ export const pages = {
     description:
       "Прайс-лист ARS VITAE SANCTUM у Чернівцях: апаратні процедури, масаж, діагностика шкіри, ендокринологія та естетичні протоколи.",
   },
+  privacy: {
+    path: "/privacy",
+    title: "Політика конфіденційності — ARS VITAE SANCTUM",
+    description:
+      "Як ARS VITAE SANCTUM у Чернівцях обробляє дані запису, анкети здоров'я та звернень. Контакти для запитів щодо персональних даних.",
+  },
 };
 
 export function pageUrl(path = "/") {

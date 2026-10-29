@@ -45,7 +45,7 @@ export default function Home() {
       <PriceTeaser />
       <Results />
       <Videos />
-      <About />
+      <Contacts />
     </main>
   );
 }
@@ -372,14 +372,14 @@ function PriceTeaser() {
 
 const instagramEmbed = "https://www.instagram.com/ars.vitae.sanctum/embed/";
 
-function About() {
+function Contacts() {
   const { company } = useCompany();
   const schedule = company?.schedule || "пн–пт: 9:00–19:00 / сб: 9:00–18:00 / нд: вихідний";
   return (
-    <section id="about" className="border-t border-border py-16 sm:py-24 md:py-32">
+    <section id="contacts" className="border-t border-border py-16 sm:py-24 md:py-32">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
-          <h2 className="font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Про нас</h2>
+          <h2 className="font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Контакти</h2>
           <a
             href={site.instagram}
             target="_blank"
