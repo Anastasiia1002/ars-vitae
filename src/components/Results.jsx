@@ -4,7 +4,6 @@ import { resultCases } from "../data.js";
 import { useReveal, useStillMotion } from "../hooks.js";
 
 const AUTO_MS = 3000;
-const photoLabel = "Результат проведених процедур";
 
 function useColumns() {
   const query = "(min-width: 768px)";
@@ -165,7 +164,7 @@ export default function Results() {
               До і після
             </h2>
             <p className="mt-4 max-w-lg text-sm text-muted-foreground">
-              На фото — результат проведених процедур.
+              На фото — назва процедури.
             </p>
           </div>
           {loop ? (
@@ -243,15 +242,15 @@ export default function Results() {
                     <div className="relative">
                       <img
                         src={item.image}
-                        alt={clone ? "" : `${photoLabel}: ${item.procedure}, фото ${number}`}
+                        alt={clone ? "" : `${item.procedure}: фото до і після, ${number}`}
                         width={1080}
                         height={1080}
                         loading={itemIndex < columns ? "eager" : "lazy"}
                         decoding="async"
                         className="aspect-square w-full object-cover"
                       />
-                      <span className="pointer-events-none absolute top-2.5 left-2.5 z-10 max-w-[calc(100%-1.25rem)] rounded-2xl bg-background/88 px-2.5 py-1 text-[11px] leading-tight text-foreground shadow-sm backdrop-blur-md sm:top-3 sm:left-3 sm:max-w-[calc(100%-1.5rem)] sm:rounded-full sm:px-3.5 sm:py-1.5 sm:text-sm sm:leading-snug">
-                        {photoLabel}
+                      <span className="pointer-events-none absolute top-3 left-3 z-10 max-w-[calc(100%-1.5rem)] rounded-full bg-background/88 px-3 py-1.5 text-[13px] leading-snug text-foreground shadow-sm backdrop-blur-md sm:top-4 sm:left-4 sm:px-3.5 sm:text-sm">
+                        {item.procedure}
                       </span>
                     </div>
                   </figure>
