@@ -28,7 +28,16 @@ const dmkCases = [1, 2].map((number) => {
   };
 });
 
-export const resultCases = [...endoliftCases, ...dmkCases];
+const acneCases = [1, 2, 3, 4, 5, 6, 7, 8].map((number) => {
+  const id = `acne-${String(number).padStart(2, "0")}`;
+  return {
+    id,
+    procedure: "Лікування Акне",
+    image: asset(`images/results/${id}.jpg`),
+  };
+});
+
+export const resultCases = [...endoliftCases, ...dmkCases, ...acneCases];
 
 export const site = {
   telegram: "https://t.me/alina_naichuk",
