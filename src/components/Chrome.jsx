@@ -145,6 +145,12 @@ export function Footer() {
           <NavLink to="/price" className="underline underline-offset-4">
             Прайс
           </NavLink>
+          <NavLink to="/#contacts" className="underline underline-offset-4">
+            Контакти
+          </NavLink>
+          <NavLink to="/privacy" className="underline underline-offset-4">
+            Політика конфіденційності
+          </NavLink>
         </div>
       </div>
     </footer>
