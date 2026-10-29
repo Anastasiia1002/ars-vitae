@@ -263,10 +263,20 @@ export const procedureArticles = [
   {
     id: "dmk",
     title: "Протоколи DMK",
-    image: asset("images/procedures/dmk.jpg"),
-    imageAlt: "Професійні ензимні маски DMK",
-    imageWidth: 1199,
-    imageHeight: 1800,
+    images: [
+      {
+        src: asset("images/procedures/dmk-1.jpg"),
+        alt: "Протокол DMK: шкіра щоки до і після",
+        width: 1600,
+        height: 1559,
+      },
+      {
+        src: asset("images/procedures/dmk-2.jpg"),
+        alt: "Протокол DMK: шкіра скроні до і після",
+        width: 1600,
+        height: 1565,
+      },
+    ],
     categoryAliases: ["протоколи дмк", "протоколи dmk"],
     lead:
       "Професійні космецевтичні протоколи DMK — це комплексний підхід до догляду та корекції стану шкіри, спрямований на відновлення її функціонального стану та підтримку природних процесів.",

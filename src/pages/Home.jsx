@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, BadgeCheck, Car, Clock, MapPin } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, Car, ChevronLeft, ChevronRight, Clock, MapPin } from "lucide-react";
 import { images, licenseRows, procedureArticles, site } from "../data.js";
 import { pages } from "../seo.js";
 import { findPriceCategory } from "../altegio.js";
@@ -282,6 +282,108 @@ function Pillars() {
   );
 }
 
+function articlePhotos(article) {
+  if (Array.isArray(article.images) && article.images.length) return article.images;
+  return [
+    {
+      src: article.image,
+      alt: article.imageAlt,
+      width: article.imageWidth,
+      height: article.imageHeight,
+    },
+  ];
+}
+
+function PhotoCarousel({ images }) {
+  const [index, setIndex] = useState(0);
+  const drag = useRef(null);
+  const count = images.length;
+  const photo = images[Math.min(index, count - 1)];
+  const frameClass = "w-full rounded-[calc(var(--radius)+8px)] border border-border";
+
+  if (!photo) return null;
+  if (count < 2) {
+    return (
+      <img
+        src={photo.src}
+        alt={photo.alt}
+        width={photo.width}
+        height={photo.height}
+        decoding="async"
+        className={frameClass}
+      />
+    );
+  }
+
+  const go = (next) => setIndex((next + count) % count);
+
+  const onPointerDown = (event) => {
+    if (event.button != null && event.button !== 0) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    drag.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  };
+
+  const onPointerUp = (event) => {
+    const start = drag.current;
+    drag.current = null;
+    if (!start || start.id !== event.pointerId) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
+    go(dx < 0 ? index + 1 : index - 1);
+  };
+
+  return (
+    <div role="region" aria-roledescription="карусель" aria-label="Фото напряму">
+      <div className="relative">
+        <div className="touch-pan-y" onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => { drag.current = null; }}>
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            width={photo.width}
+            height={photo.height}
+            decoding="async"
+            className={frameClass}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={() => go(index - 1)}
+          aria-label="Попереднє фото"
+          className="absolute top-1/2 left-3 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/90 text-foreground"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          type="button"
+          onClick={() => go(index + 1)}
+          aria-label="Наступне фото"
+          className="absolute top-1/2 right-3 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/90 text-foreground"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      </div>
+      <div className="mt-3 flex items-center justify-center gap-3">
+        <div className="flex items-center gap-2">
+          {images.map((item, itemIndex) => (
+            <button
+              key={item.src}
+              type="button"
+              aria-label={`Фото ${itemIndex + 1} з ${count}`}
+              aria-current={itemIndex === index ? "true" : undefined}
+              onClick={() => setIndex(itemIndex)}
+              className={`h-2 rounded-full transition-all ${itemIndex === index ? "w-6 bg-primary" : "w-2 bg-border"}`}
+            />
+          ))}
+        </div>
+        <p className="text-xs tracking-[0.14em] text-muted-foreground tabular-nums">
+          {index + 1} / {count}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function ProcedureArticle({ article, index, categories }) {
   const category = findPriceCategory(categories, article.categoryAliases, {
     exact: article.exactCategory,
@@ -296,14 +398,7 @@ function ProcedureArticle({ article, index, categories }) {
       className="mt-6 grid gap-6 sm:mt-8 md:grid-cols-12 md:gap-10"
     >
       <div className="md:col-span-5">
-        <img
-          src={article.image}
-          alt={article.imageAlt}
-          width={article.imageWidth}
-          height={article.imageHeight}
-          decoding="async"
-          className="w-full rounded-[calc(var(--radius)+8px)] border border-border"
-        />
+        <PhotoCarousel key={article.id} images={articlePhotos(article)} />
       </div>
       <div className="md:col-span-7">
         <p className="eyebrow">{String(index + 1).padStart(2, "0")}</p>
