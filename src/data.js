@@ -9,7 +9,8 @@ export const images = {
   logo: asset("images/logo.png"),
 };
 
-// Карусель «до / після». На знімку вже є обидва кадри, procedure — підпис на фото.
+// Карусель «до / після». На знімку вже є обидва кадри.
+// procedure використовується в навігації; на самому фото один спільний підпис.
 const endoliftCases = [1, 2, 3, 4, 5, 6, 7, 8].map((number) => {
   const id = `endolift-${String(number).padStart(2, "0")}`;
   return {
