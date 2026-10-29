@@ -37,7 +37,16 @@ const acneCases = [1, 2, 3, 4, 5, 6, 7, 8].map((number) => {
   };
 });
 
-export const resultCases = [...endoliftCases, ...dmkCases, ...acneCases];
+const lipCases = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((number) => {
+  const id = `lips-${String(number).padStart(2, "0")}`;
+  return {
+    id,
+    procedure: "Контурна пластика губ",
+    image: asset(`images/results/${id}.jpg`),
+  };
+});
+
+export const resultCases = [...endoliftCases, ...dmkCases, ...acneCases, ...lipCases];
 
 export const site = {
   telegram: "https://t.me/alina_naichuk",
