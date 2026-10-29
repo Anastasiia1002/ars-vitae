@@ -389,28 +389,8 @@ function About() {
             @ars.vitae.sanctum
           </a>
         </div>
-        <div className="mt-8 grid items-start gap-4 sm:mt-10 lg:grid-cols-2 lg:gap-5">
-          <div className="reveal bento-card">
-            <a
-              href={site.instagram}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Профіль Instagram @ars.vitae.sanctum"
-              className="relative block overflow-hidden bg-card"
-              style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
-            >
-              <iframe
-                title="Профіль Instagram @ars.vitae.sanctum"
-                src={instagramEmbed}
-                scrolling="no"
-                tabIndex={-1}
-                loading="lazy"
-                className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
-                style={{ transform: "scale(calc(100cqw / 960px))" }}
-              />
-            </a>
-          </div>
-          <div className="reveal bento-card space-y-6 p-6 sm:p-8 md:p-10">
+        <div className="mt-8 grid items-stretch gap-4 sm:mt-10 lg:grid-cols-2 lg:gap-5">
+          <div className="reveal bento-card flex h-full flex-col justify-between gap-6 p-6 sm:p-8 md:p-10">
             <div>
               <p className="eyebrow">Локація</p>
               <h3 className="mt-3 font-display text-4xl sm:text-5xl">{site.city}</h3>
@@ -457,6 +437,26 @@ function About() {
                 Перед першим візитом надішлемо коротку анкету здоров'я — це економить час консультації.
               </p>
             </div>
+          </div>
+          <div className="reveal bento-card h-full">
+            <a
+              href={site.instagram}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Профіль Instagram @ars.vitae.sanctum"
+              className="relative block h-full overflow-hidden bg-card"
+              style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
+            >
+              <iframe
+                title="Профіль Instagram @ars.vitae.sanctum"
+                src={instagramEmbed}
+                scrolling="no"
+                tabIndex={-1}
+                loading="lazy"
+                className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
+                style={{ transform: "scale(calc(100cqw / 960px))" }}
+              />
+            </a>
           </div>
         </div>
       </div>
