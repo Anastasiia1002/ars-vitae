@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-export default function BeforeAfter({ before, after, caption }) {
+export default function BeforeAfter({ before, after, caption, procedure }) {
   const [position, setPosition] = useState(52);
   const frame = useRef(null);
   const dragging = useRef(false);
@@ -10,6 +10,9 @@ export default function BeforeAfter({ before, after, caption }) {
     if (!box) return;
     setPosition(Math.min(100, Math.max(0, ((clientX - box.left) / box.width) * 100)));
   };
+
+  const beforeAlt = procedure ? `${procedure}: фото до` : "Фото до";
+  const afterAlt = procedure ? `${procedure}: фото після` : "Фото після";
 
   return (
     <figure className="bento-card overflow-hidden">
@@ -31,14 +34,16 @@ export default function BeforeAfter({ before, after, caption }) {
       >
         <img
           src={after}
-          alt="Фото після"
+          alt={afterAlt}
           loading="lazy"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <img
           src={before}
-          alt="Фото до"
+          alt={beforeAlt}
           loading="lazy"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
           style={{
             clipPath: `inset(0 ${100 - position}% 0 0)`,
@@ -60,10 +65,17 @@ export default function BeforeAfter({ before, after, caption }) {
         <span className="absolute right-3 bottom-3 rounded-full bg-background/80 px-3 py-1 text-[10px] tracking-[0.2em] uppercase">
           після
         </span>
+        {procedure ? (
+          <span className="pointer-events-none absolute top-3 left-3 z-10 max-w-[calc(100%-1.5rem)] rounded-full bg-background/88 px-3.5 py-1.5 text-[13px] leading-snug text-foreground shadow-sm backdrop-blur-md sm:top-4 sm:left-4 sm:px-4 sm:text-sm">
+            {procedure}
+          </span>
+        ) : null}
       </div>
-      <figcaption className="border-t border-border px-5 py-4 text-sm text-muted-foreground">
-        {caption}
-      </figcaption>
+      {caption ? (
+        <figcaption className="border-t border-border px-5 py-4 text-sm text-muted-foreground">
+          {caption}
+        </figcaption>
+      ) : null}
     </figure>
   );
 }
