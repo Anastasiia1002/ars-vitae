@@ -9,6 +9,35 @@ export const images = {
   logo: asset("images/logo.png"),
 };
 
+// Карусель «до / після». procedure — підпис на самому фото.
+// Для окремої пари знімків підставте свої файли в before і after.
+export const resultCases = [
+  {
+    id: "biorevitalization",
+    procedure: "Біоревіталізація",
+    before: images.before,
+    after: images.after,
+  },
+  {
+    id: "dmk",
+    procedure: "Протоколи DMK",
+    before: images.before,
+    after: images.after,
+  },
+  {
+    id: "endolift",
+    procedure: "Ендоліфт",
+    before: images.before,
+    after: images.after,
+  },
+  {
+    id: "face-massage",
+    procedure: "Масаж обличчя",
+    before: images.before,
+    after: images.after,
+  },
+];
+
 export const site = {
   telegram: "https://t.me/alina_naichuk",
   instagram: "https://instagram.com/ars.vitae.sanctum",

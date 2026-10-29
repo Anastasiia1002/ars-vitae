@@ -5,10 +5,10 @@ import { images, licenseRows, procedureArticles, site } from "../data.js";
 import { pages } from "../seo.js";
 import { findPriceCategory } from "../altegio.js";
 import { useReveal, useScrollY, useStillMotion } from "../hooks.js";
-import BeforeAfter from "../components/BeforeAfter.jsx";
 import BookingDialog from "../components/BookingDialog.jsx";
 import Dialog from "../components/Dialog.jsx";
 import Team from "../components/Team.jsx";
+import Results from "../components/Results.jsx";
 import Seo from "../components/Seo.jsx";
 import Videos from "../components/Videos.jsx";
 import { useCatalog, useCompany } from "../useAltegio.js";
@@ -43,6 +43,7 @@ export default function Home() {
       <Pillars />
       <Team />
       <PriceTeaser />
+      <Results />
       <Proof />
       <Videos />
       <Location />
@@ -387,34 +388,25 @@ function Proof() {
             @ars.vitae.sanctum
           </a>
         </div>
-        <div className="mt-8 grid items-start gap-4 sm:mt-10 md:grid-cols-2 md:gap-5">
-          <div className="reveal">
-            <BeforeAfter
-              before={images.before}
-              after={images.after}
-              caption="Потягніть повзунок, щоб порівняти фото до і після."
+        <div className="reveal bento-card mt-8 max-w-3xl sm:mt-10">
+          <a
+            href={site.instagram}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Профіль Instagram @ars.vitae.sanctum"
+            className="relative block overflow-hidden bg-card"
+            style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
+          >
+            <iframe
+              title="Профіль Instagram @ars.vitae.sanctum"
+              src={instagramEmbed}
+              scrolling="no"
+              tabIndex={-1}
+              loading="lazy"
+              className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
+              style={{ transform: "scale(calc(100cqw / 960px))" }}
             />
-          </div>
-          <div className="reveal bento-card">
-            <a
-              href={site.instagram}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Профіль Instagram @ars.vitae.sanctum"
-              className="relative block overflow-hidden bg-card"
-              style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
-            >
-              <iframe
-                title="Профіль Instagram @ars.vitae.sanctum"
-                src={instagramEmbed}
-                scrolling="no"
-                tabIndex={-1}
-                loading="lazy"
-                className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
-                style={{ transform: "scale(calc(100cqw / 960px))" }}
-              />
-            </a>
-          </div>
+          </a>
         </div>
       </div>
     </section>

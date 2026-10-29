@@ -227,7 +227,8 @@ img {
 }
 
 #pillars,
-#videos {
+#videos,
+#results {
   scroll-margin-top: 4.5rem;
 }
 
@@ -411,6 +412,11 @@ img {
   }
 }
 
+.results-track {
+  display: flex;
+  transition: transform 0.7s var(--ease-lux);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .animate-rise,
@@ -421,6 +427,10 @@ img {
     animation: none;
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+
+  .results-track {
     transition: none;
   }
 
