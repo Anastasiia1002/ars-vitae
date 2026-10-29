@@ -9,34 +9,15 @@ export const images = {
   logo: asset("images/logo.png"),
 };
 
-// Карусель «до / після». procedure — підпис на самому фото.
-// Для окремої пари знімків підставте свої файли в before і after.
-export const resultCases = [
-  {
-    id: "biorevitalization",
-    procedure: "Біоревіталізація",
-    before: images.before,
-    after: images.after,
-  },
-  {
-    id: "dmk",
-    procedure: "Протоколи DMK",
-    before: images.before,
-    after: images.after,
-  },
-  {
-    id: "endolift",
+// Карусель «до / після». На знімку вже є обидва кадри, procedure — підпис на фото.
+export const resultCases = [1, 2, 3, 4, 5, 6, 7, 8].map((number) => {
+  const id = `endolift-${String(number).padStart(2, "0")}`;
+  return {
+    id,
     procedure: "Ендоліфт",
-    before: images.before,
-    after: images.after,
-  },
-  {
-    id: "face-massage",
-    procedure: "Масаж обличчя",
-    before: images.before,
-    after: images.after,
-  },
-];
+    image: asset(`images/results/${id}.jpg`),
+  };
+});
 
 export const site = {
   telegram: "https://t.me/alina_naichuk",

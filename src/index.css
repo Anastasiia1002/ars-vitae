@@ -414,7 +414,12 @@ img {
 
 .results-track {
   display: flex;
+  gap: var(--results-gap, 0.75rem);
   transition: transform 0.7s var(--ease-lux);
+}
+
+.results-track.is-instant {
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
