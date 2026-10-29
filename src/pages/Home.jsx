@@ -44,9 +44,8 @@ export default function Home() {
       <Team />
       <PriceTeaser />
       <Results />
-      <Proof />
       <Videos />
-      <Location />
+      <About />
     </main>
   );
 }
@@ -373,12 +372,14 @@ function PriceTeaser() {
 
 const instagramEmbed = "https://www.instagram.com/ars.vitae.sanctum/embed/";
 
-function Proof() {
+function About() {
+  const { company } = useCompany();
+  const schedule = company?.schedule || "пн–пт: 9:00–19:00 / сб: 9:00–18:00 / нд: вихідний";
   return (
-    <section className="border-t border-border py-16 sm:py-24 md:py-32">
+    <section id="about" className="border-t border-border py-16 sm:py-24 md:py-32">
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
-          <h2 className="font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Візуальні докази</h2>
+          <h2 className="font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">Про нас</h2>
           <a
             href={site.instagram}
             target="_blank"
@@ -388,82 +389,75 @@ function Proof() {
             @ars.vitae.sanctum
           </a>
         </div>
-        <div className="reveal bento-card mt-8 max-w-3xl sm:mt-10">
-          <a
-            href={site.instagram}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Профіль Instagram @ars.vitae.sanctum"
-            className="relative block overflow-hidden bg-card"
-            style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
-          >
-            <iframe
-              title="Профіль Instagram @ars.vitae.sanctum"
-              src={instagramEmbed}
-              scrolling="no"
-              tabIndex={-1}
-              loading="lazy"
-              className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
-              style={{ transform: "scale(calc(100cqw / 960px))" }}
-            />
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Location() {
-  const { company } = useCompany();
-  const schedule = company?.schedule || "пн–пт: 9:00–19:00 / сб: 9:00–18:00 / нд: вихідний";
-  return (
-    <section className="mx-auto max-w-[1500px] px-5 pb-20 sm:pb-24 md:px-10 md:pb-32">
-      <div className="reveal bento-card grid gap-8 p-6 sm:p-8 md:grid-cols-2 md:p-14">
-        <div>
-          <p className="eyebrow">Локація</p>
-          <h2 className="mt-3 font-display text-4xl sm:text-5xl md:text-7xl">{site.city}</h2>
-          <p className="mt-4 text-sm text-muted-foreground">{site.address}</p>
-          <a href={site.phone} className="mt-2 inline-block text-sm underline underline-offset-4 whitespace-nowrap">
-            {site.phoneLabel}
-          </a>
-          <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-8 grid items-start gap-4 sm:mt-10 lg:grid-cols-2 lg:gap-5">
+          <div className="reveal bento-card">
             <a
-              href={site.maps}
+              href={site.instagram}
               target="_blank"
               rel="noreferrer"
-              data-magnetic
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-xs tracking-wide text-primary-foreground uppercase"
+              aria-label="Профіль Instagram @ars.vitae.sanctum"
+              className="relative block overflow-hidden bg-card"
+              style={{ containerType: "inline-size", aspectRatio: "960 / 798" }}
             >
-              <MapPin className="h-4 w-4" /> Побудувати маршрут
+              <iframe
+                title="Профіль Instagram @ars.vitae.sanctum"
+                src={instagramEmbed}
+                scrolling="no"
+                tabIndex={-1}
+                loading="lazy"
+                className="pointer-events-none absolute top-0 left-0 h-[863px] w-[960px] max-w-none origin-top-left border-0"
+                style={{ transform: "scale(calc(100cqw / 960px))" }}
+              />
             </a>
-            <BookingDialog
-              trigger={({ onClick }) => (
-                <button
-                  type="button"
-                  onClick={onClick}
-                  data-magnetic
-                  className="rounded-full border border-primary px-5 py-3 text-xs tracking-wide uppercase transition-colors duration-500 hover:bg-primary hover:text-primary-foreground"
-                >
-                  Записатися
-                </button>
-              )}
-            />
           </div>
-        </div>
-        <div className="space-y-4 text-sm text-muted-foreground">
-          <p className="flex gap-3">
-            <Car className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.4} />
-            Безкоштовне паркування у внутрішньому дворі; за потреби — місця вздовж вулиці за 80 м від
-            входу.
-          </p>
-          <p className="flex gap-3">
-            <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.4} />
-            {schedule}. Приймаємо за попереднім записом, щоб у просторі була одна людина одночасно.
-          </p>
-          <p className="flex gap-3">
-            <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.4} />
-            Перед першим візитом надішлемо коротку анкету здоров'я — це економить час консультації.
-          </p>
+          <div className="reveal bento-card space-y-6 p-6 sm:p-8 md:p-10">
+            <div>
+              <p className="eyebrow">Локація</p>
+              <h3 className="mt-3 font-display text-4xl sm:text-5xl">{site.city}</h3>
+              <p className="mt-4 text-sm text-muted-foreground">{site.address}</p>
+              <a href={site.phone} className="mt-2 inline-block text-sm underline underline-offset-4 whitespace-nowrap">
+                {site.phoneLabel}
+              </a>
+              <div className="mt-6 flex flex-wrap gap-2">
+                <a
+                  href={site.maps}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-magnetic
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-xs tracking-wide text-primary-foreground uppercase"
+                >
+                  <MapPin className="h-4 w-4" /> Побудувати маршрут
+                </a>
+                <BookingDialog
+                  trigger={({ onClick }) => (
+                    <button
+                      type="button"
+                      onClick={onClick}
+                      data-magnetic
+                      className="rounded-full border border-primary px-5 py-3 text-xs tracking-wide uppercase transition-colors duration-500 hover:bg-primary hover:text-primary-foreground"
+                    >
+                      Записатися
+                    </button>
+                  )}
+                />
+              </div>
+            </div>
+            <div className="space-y-4 text-sm text-muted-foreground">
+              <p className="flex gap-3">
+                <Car className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.4} />
+                Безкоштовне паркування у внутрішньому дворі; за потреби — місця вздовж вулиці за 80 м від
+                входу.
+              </p>
+              <p className="flex gap-3">
+                <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.4} />
+                {schedule}. Приймаємо за попереднім записом, щоб у просторі була одна людина одночасно.
+              </p>
+              <p className="flex gap-3">
+                <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.4} />
+                Перед першим візитом надішлемо коротку анкету здоров'я — це економить час консультації.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

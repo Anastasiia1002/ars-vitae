@@ -44,18 +44,16 @@ export default function Results() {
   const [index, setIndex] = useState(0);
   const [motion, setMotion] = useState(true);
   const [step, setStep] = useState(0);
-  const [hover, setHover] = useState(false);
   const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(() => document.hidden);
   const [inView, setInView] = useState(false);
   const viewport = useRef(null);
-  const section = useRef(null);
   useReveal([count]);
 
   const loop = count > columns;
   const slides = loop ? [...cases, ...cases.slice(0, columns)] : cases;
   const active = count ? index % count : 0;
-  const playing = loop && inView && !hover && !paused && !reduce && !hidden;
+  const playing = loop && inView && !paused && !reduce && !hidden;
 
   useLayoutEffect(() => {
     const root = viewport.current;
@@ -74,15 +72,15 @@ export default function Results() {
   }, [columns, count]);
 
   useEffect(() => {
-    const node = section.current;
+    const node = viewport.current;
     if (!node) return undefined;
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.35 },
+      { threshold: 0.2 },
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [count]);
+  }, [count, columns]);
 
   useEffect(() => {
     const sync = () => setHidden(document.hidden);
@@ -151,10 +149,7 @@ export default function Results() {
   return (
     <section
       id="results"
-      ref={section}
       className="border-t border-border py-16 sm:py-24 md:py-32"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
     >
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
