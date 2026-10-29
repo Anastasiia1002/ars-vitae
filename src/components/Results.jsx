@@ -215,7 +215,7 @@ export default function Results() {
           className="reveal mt-8 sm:mt-10"
           role="region"
           aria-roledescription="карусель"
-          aria-label="Фото до і після, процедура Ендоліфт"
+          aria-label="Фото до і після за процедурами"
           onKeyDown={onKeyDown}
         >
           <div ref={viewport} className="overflow-hidden">

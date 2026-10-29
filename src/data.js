@@ -10,7 +10,7 @@ export const images = {
 };
 
 // Карусель «до / після». На знімку вже є обидва кадри, procedure — підпис на фото.
-export const resultCases = [1, 2, 3, 4, 5, 6, 7, 8].map((number) => {
+const endoliftCases = [1, 2, 3, 4, 5, 6, 7, 8].map((number) => {
   const id = `endolift-${String(number).padStart(2, "0")}`;
   return {
     id,
@@ -18,6 +18,17 @@ export const resultCases = [1, 2, 3, 4, 5, 6, 7, 8].map((number) => {
     image: asset(`images/results/${id}.jpg`),
   };
 });
+
+const dmkCases = [1, 2].map((number) => {
+  const id = `dmk-${String(number).padStart(2, "0")}`;
+  return {
+    id,
+    procedure: "Протоколи ДМК",
+    image: asset(`images/results/${id}.jpg`),
+  };
+});
+
+export const resultCases = [...endoliftCases, ...dmkCases];
 
 export const site = {
   telegram: "https://t.me/alina_naichuk",
