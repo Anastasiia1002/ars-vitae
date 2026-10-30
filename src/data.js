@@ -308,9 +308,9 @@ export const procedureArticles = [
     id: "consultations",
     title: "Консультації спеціалістів",
     image: asset("images/procedures/consultations.jpg"),
-    imageAlt: "Кабінет консультації: біла кушетка біля панорамного вікна",
-    imageWidth: 1800,
-    imageHeight: 1201,
+    imageAlt: "Лікарка заповнює карту консультації за столом",
+    imageWidth: 1200,
+    imageHeight: 1800,
     categoryAliases: ["консультації"],
     exactCategory: true,
     lead:
