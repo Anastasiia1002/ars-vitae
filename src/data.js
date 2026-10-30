@@ -461,7 +461,7 @@ export const procedureArticles = [
     id: "endosphere",
     title: "Ендосфера",
     image: asset("images/procedures/endosphere.jpg"),
-    imageAlt: "Контур тіла для апаратної процедури",
+    imageAlt: "Апарат ендосфери з синім світлом на тілі",
     imageWidth: 1200,
     imageHeight: 1800,
     categoryAliases: ["ендосфера"],
