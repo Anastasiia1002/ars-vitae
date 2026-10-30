@@ -41,9 +41,9 @@ export default function Home() {
       <Hero scrollY={scrollY} />
       <Approach />
       <Pillars />
+      <Results />
       <Team />
       <PriceTeaser />
-      <Results />
       <Videos />
       <Contacts />
     </main>

@@ -149,7 +149,7 @@ export default function Results() {
   return (
     <section
       id="results"
-      className="border-t border-border py-16 sm:py-24 md:py-32"
+      className="py-16 sm:py-24 md:py-32"
     >
       <div className="mx-auto max-w-[1500px] px-5 md:px-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
