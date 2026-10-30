@@ -155,7 +155,7 @@ export default function Results() {
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
           <div className="min-w-0 max-w-2xl">
             <p className="eyebrow">Результати</p>
-            <h2 className="mt-3 font-display text-[2.15rem] leading-[0.95] sm:text-6xl md:text-[5vw]">
+            <h2 className="mt-3 font-display text-[1.65rem] leading-none sm:text-6xl sm:leading-[0.95] md:text-[5vw]">
               До і після
             </h2>
             <p className="mt-4 max-w-lg text-sm text-muted-foreground">
@@ -244,7 +244,7 @@ export default function Results() {
                         decoding="async"
                         className="aspect-square w-full object-cover"
                       />
-                      <span className="pointer-events-none absolute top-3 left-3 z-10 max-w-[calc(100%-1.5rem)] rounded-full bg-background/88 px-3 py-1.5 text-[13px] leading-snug text-foreground shadow-sm backdrop-blur-md sm:top-4 sm:left-4 sm:px-3.5 sm:text-sm">
+                      <span className="pointer-events-none absolute top-2 left-2 z-10 max-w-[calc(100%-1rem)] rounded-xl bg-background/88 px-2 py-0.5 text-[11px] leading-tight text-foreground shadow-sm backdrop-blur-md sm:top-4 sm:left-4 sm:max-w-[calc(100%-1.5rem)] sm:rounded-full sm:px-3.5 sm:py-1.5 sm:text-sm sm:leading-snug">
                         {item.procedure}
                       </span>
                     </div>
