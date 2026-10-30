@@ -408,7 +408,7 @@ export const procedureArticles = [
     id: "face-massage",
     title: "Масаж обличчя з міоліфтинговим ефектом",
     image: asset("images/procedures/face-massage.jpg"),
-    imageAlt: "Засіб для догляду за шкірою обличчя",
+    imageAlt: "Спеціаліст масажує обличчя пацієнтки",
     imageWidth: 1200,
     imageHeight: 1800,
     categoryAliases: ["масаж обличчя"],
