@@ -45,15 +45,6 @@ export function Header() {
         </nav>
         <div className="flex shrink-0 items-center gap-2">
           <AccessibilityWidget onOpen={() => setMenuOpen(false)} />
-          <button
-            type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card lg:hidden"
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Закрити меню" : "Відкрити меню"}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
           <BookingDialog
             trigger={({ onClick }) => (
               <button
@@ -65,6 +56,15 @@ export function Header() {
               </button>
             )}
           />
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card lg:hidden"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Закрити меню" : "Відкрити меню"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
       {menuOpen ? (
