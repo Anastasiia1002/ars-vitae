@@ -244,7 +244,7 @@ export default function Results() {
                         decoding="async"
                         className="aspect-square w-full object-cover"
                       />
-                      <span className="pointer-events-none absolute top-2 left-2 z-10 max-w-[calc(100%-1rem)] rounded-xl bg-background/88 px-2 py-0.5 text-[11px] leading-tight text-foreground shadow-sm backdrop-blur-md sm:top-4 sm:left-4 sm:max-w-[calc(100%-1.5rem)] sm:rounded-full sm:px-3.5 sm:py-1.5 sm:text-sm sm:leading-snug">
+                      <span className="pointer-events-none absolute top-1 left-1 z-10 max-w-[calc(100%-0.5rem)] truncate rounded-full bg-background/90 px-1.5 py-px text-[10px] leading-none tracking-tight text-foreground shadow-sm backdrop-blur-md lg:top-4 lg:left-4 lg:max-w-[calc(100%-2rem)] lg:overflow-visible lg:px-3.5 lg:py-1.5 lg:text-sm lg:leading-snug lg:tracking-normal lg:whitespace-normal lg:text-clip">
                         {item.procedure}
                       </span>
                     </div>
@@ -254,7 +254,7 @@ export default function Results() {
             </div>
           </div>
           {loop ? (
-            <div className="mt-4 flex flex-wrap justify-center gap-1" role="group" aria-label="Фото">
+            <div className="mt-2.5 flex flex-wrap items-center justify-center gap-x-1 gap-y-1 md:mt-4 md:gap-1" role="group" aria-label="Фото">
               {cases.map((item, itemIndex) => {
                 const selected = itemIndex === active;
                 return (
@@ -267,11 +267,11 @@ export default function Results() {
                       setMotion(true);
                       setIndex(itemIndex);
                     }}
-                    className="inline-flex h-11 items-center px-1.5"
+                    className="inline-flex h-4 items-center px-px md:h-11 md:px-1.5"
                   >
                     <span
-                      className={`block h-2 rounded-full transition-all ${
-                        selected ? "w-8 bg-primary" : "w-2 bg-border"
+                      className={`block rounded-full transition-all ${
+                        selected ? "h-1 w-4 bg-primary md:h-2 md:w-8" : "h-1 w-1 bg-border md:h-2 md:w-2"
                       }`}
                     />
                   </button>
