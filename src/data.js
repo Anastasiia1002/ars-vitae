@@ -381,9 +381,9 @@ export const procedureArticles = [
     id: "injectables",
     title: "Ін'єкційна естетична косметологія",
     image: asset("images/procedures/injectables.jpg"),
-    imageAlt: "Кабінет ін'єкційної косметології з кушеткою та дзеркалом",
-    imageWidth: 1800,
-    imageHeight: 1199,
+    imageAlt: "Ін'єкція в ділянку чола під час процедури",
+    imageWidth: 1200,
+    imageHeight: 1800,
     categoryAliases: ["ін'єкційна естетична косметологія"],
     exactCategory: true,
     lead:
